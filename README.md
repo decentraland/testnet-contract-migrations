@@ -11,6 +11,8 @@ Before running the deployment script, make sure to set up the following environm
 - `ETHERSCAN_API_KEY`: Your API key for Etherscan. Refer to the [Etherscan API documentation](https://docs.etherscan.io/getting-started/viewing-api-usage-statistics) for more information.
 - `FROM_NETWORK`: The name of the previous testnet network where the contracts were deployed (e.g., Goerli).
 
+Also, make sure to set up the addresses of the contracts you want to migrate from the previous testnet network in the `constants.ts` file under the `addresses` variable.
+
 ## Preparation and Deployment
 
 1. Run the contract preparation script to download and modify the contract source code:

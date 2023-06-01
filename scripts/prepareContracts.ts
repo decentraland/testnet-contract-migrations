@@ -122,24 +122,33 @@ async function createDeployScript(
   contractName: string,
   options: Pick<EtherscanResult, "ABI" | "ConstructorArguments">
 ) {
-  console.log(`Creating the deploy script for the ${contractName}...`);
-  const deployTemplate = await readFile("./templates/deploy.ts", "utf-8");
-  const constructorArgs = getConstructorArgs(options);
-
-  const deployScript = deployTemplate
-    .replaceAll("CONTRACT_NAME", contractName)
-    // Replace the constructor arguments comment with the actual arguments
-    .replace(
-      "// CONSTRUCTOR_ARGUMENTS",
-      constructorArgs
-        ? `// Constructor args: ${JSON.stringify(constructorArgs)}`
-        : ""
+  // Check if already exists
+  try {
+    await readFile(`./scripts/deploy${contractName}.ts`, "utf-8");
+    console.log(
+      `The deploy script for the ${contractName} already exists. Skipping...`
     );
+    return;
+  } catch (error) {
+    console.log(`Creating the deploy script for the ${contractName}...`);
+    const deployTemplate = await readFile("./templates/deploy.ts", "utf-8");
+    const constructorArgs = getConstructorArgs(options);
 
-  await writeFile(`./scripts/deploy${contractName}.ts`, deployScript);
-  console.log(
-    `Deploy script created for the ${contractName} as './scripts/deploy${contractName}.ts'!`
-  );
+    const deployScript = deployTemplate
+      .replaceAll("CONTRACT_NAME", contractName)
+      // Replace the constructor arguments comment with the actual arguments
+      .replace(
+        "// CONSTRUCTOR_ARGUMENTS",
+        constructorArgs
+          ? `// Constructor args: ${JSON.stringify(constructorArgs)}`
+          : ""
+      );
+
+    await writeFile(`./scripts/deploy${contractName}.ts`, deployScript);
+    console.log(
+      `Deploy script created for the ${contractName} as './scripts/deploy${contractName}.ts'!`
+    );
+  }
 }
 
 async function updatePragmaVersions() {
