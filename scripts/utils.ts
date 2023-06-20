@@ -10,7 +10,7 @@ export const isErrorWithMessage = (error: unknown): error is Error =>
 export async function verifyContract(
   contractName: string,
   contractAddress: string,
-  constructorArguments: any[] = []
+  ...constructorArguments: any[]
 ) {
   console.log("Waiting for etherscan to index the contract...");
 
@@ -38,4 +38,24 @@ export async function verifyContract(
       await delay(TWO_MINUTES);
     }
   }
+}
+
+export function getChainId() {
+  const { CHAIN_ID } = process.env;
+
+  if (CHAIN_ID === undefined) {
+    throw new Error("Missing chainId.");
+  }
+
+  return Number(CHAIN_ID);
+}
+
+export function getDappsAdminAddress() {
+  const { DAPPS_ADMIN_ADDRESS } = process.env;
+
+  if (DAPPS_ADMIN_ADDRESS === undefined) {
+    throw new Error("Missing dApps admin address.");
+  }
+
+  return DAPPS_ADMIN_ADDRESS;
 }

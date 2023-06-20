@@ -1,15 +1,9 @@
 import { ethers } from "hardhat";
 import ethProvider from "eth-provider";
-import { verifyContract } from "../scripts/utils";
-
-const { CHAIN_ID } = process.env;
+import { getChainId, verifyContract } from "./utils";
 
 async function main() {
-  if (CHAIN_ID === undefined) {
-    throw new Error("ChainId not found");
-  }
-
-  const chainId = Number(CHAIN_ID);
+  const chainId = getChainId();
 
   const frame = ethProvider("frame");
   frame.setChain(chainId);
@@ -37,7 +31,9 @@ async function main() {
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => (process.exitCode = 0))
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });

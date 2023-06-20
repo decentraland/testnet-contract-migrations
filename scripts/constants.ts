@@ -98,3 +98,5 @@ export const pragmaVersions = [
   "0.8.0",
   "0.8.0",
 ];
+
+export const MANA_TOKEN_ADDRESS = "0x3DD1feF020741386bF9C8d905B7E2B02A668cCDA";

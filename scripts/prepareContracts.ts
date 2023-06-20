@@ -195,7 +195,9 @@ async function main() {
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+main()
+  .then(() => (process.exitCode = 0))
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
