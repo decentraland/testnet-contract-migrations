@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
-import contracts from "./contracts.json";
+import contracts from "../../contracts.json";
 
 async function main() {
   dotenv.config();
