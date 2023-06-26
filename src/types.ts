@@ -53,7 +53,7 @@ export type CreationData = {
 
 export type ContractData = {
   name: ContractName;
-  original: {
+  origin: {
     address: string;
     sourceCodeData?: SourceCodeData;
     creationData?: CreationData;

@@ -59,17 +59,17 @@ async function main() {
 
     console.log(`Fetching source code data...`);
 
-    contractData.original.sourceCodeData = await fetchSourceCodeData(contractData.original.address, originChainId);
+    contractData.origin.sourceCodeData = await fetchSourceCodeData(contractData.origin.address, originChainId);
 
     console.log(`Fetching creation data...`);
 
-    contractData.original.creationData = await fetchCreationData(contractData.original.address, originChainId);
+    contractData.origin.creationData = await fetchCreationData(contractData.origin.address, originChainId);
 
     console.log(`Fetching creation input data...`);
 
-    const inputData = await fetchCreationInputData(originProvider, contractData.original.creationData.txHash);
+    const inputData = await fetchCreationInputData(originProvider, contractData.origin.creationData.txHash);
 
-    if (contractData.original.sourceCodeData.ConstructorArguments) {
+    if (contractData.origin.sourceCodeData.ConstructorArguments) {
       throw new Error("Not supported");
     }
 

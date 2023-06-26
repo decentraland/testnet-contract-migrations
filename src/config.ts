@@ -16,7 +16,7 @@ export const contractDataMap: Map<ContractName, ContractData> = new Map();
 
 contractDataMap.set(ContractName.MANAToken, {
   name: ContractName.MANAToken,
-  original: {
+  origin: {
     address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
   },
   target: {},
@@ -24,7 +24,7 @@ contractDataMap.set(ContractName.MANAToken, {
 
 contractDataMap.set(ContractName.LANDRegistry, {
   name: ContractName.LANDRegistry,
-  original: {
+  origin: {
     address: "0x554bb6488ba955377359bed16b84ed0822679cdc",
   },
   target: {
@@ -35,7 +35,7 @@ contractDataMap.set(ContractName.LANDRegistry, {
         throw new Error("LANDRegistry not found");
       }
 
-      const abi = landRegistry.original.sourceCodeData?.ABI;
+      const abi = landRegistry.origin.sourceCodeData?.ABI;
 
       if (!abi) {
         throw new Error("LANDRegistry ABI not found");
