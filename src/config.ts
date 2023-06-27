@@ -1,47 +1,17 @@
-import { ethers } from "ethers";
-import { ChainId, ContractData, ContractName } from "./types";
+import { ContractName } from "./types";
 
-export const deploymentOrder: ContractName[] = [ContractName.MANAToken, ContractName.LANDRegistry];
+export const deploymentOrder = [
+  ContractName.MANAToken,
+  ContractName.LANDRegistry,
+  ContractName.LANDProxy,
+  ContractName.EstateRegistry,
+  ContractName.EstateProxy,
+];
 
-export const migrationData = {
-  origin: {
-    chainId: ChainId.MAINNET,
-  },
-  target: {
-    chainId: ChainId.GANACHE,
-  },
-};
+export const contractAddressesMap = new Map<ContractName, string>();
 
-export const contractDataMap: Map<ContractName, ContractData> = new Map();
-
-contractDataMap.set(ContractName.MANAToken, {
-  name: ContractName.MANAToken,
-  origin: {
-    address: "0x0f5d2fb29fb7d3cfee444a200298f468908cc942",
-  },
-  target: {},
-});
-
-contractDataMap.set(ContractName.LANDRegistry, {
-  name: ContractName.LANDRegistry,
-  origin: {
-    address: "0x554bb6488ba955377359bed16b84ed0822679cdc",
-  },
-  target: {
-    getInitializationData: () => {
-      const landRegistry = contractDataMap.get(ContractName.LANDRegistry);
-
-      if (!landRegistry) {
-        throw new Error("LANDRegistry not found");
-      }
-
-      const abi = landRegistry.origin.sourceCodeData?.ABI;
-
-      if (!abi) {
-        throw new Error("LANDRegistry ABI not found");
-      }
-
-      return new ethers.Interface(abi).encodeFunctionData("initialize", [ethers.toUtf8Bytes("Nando")]);
-    },
-  },
-});
+contractAddressesMap.set(ContractName.MANAToken, "0x0f5d2fb29fb7d3cfee444a200298f468908cc942");
+contractAddressesMap.set(ContractName.LANDRegistry, "0x554bb6488ba955377359bed16b84ed0822679cdc");
+contractAddressesMap.set(ContractName.LANDProxy, "0xf87e31492faf9a91b02ee0deaad50d51d56d5d4d");
+contractAddressesMap.set(ContractName.EstateRegistry, "0x1784ef41af86e97f8d28afe95b573a24aeda966e");
+contractAddressesMap.set(ContractName.EstateProxy, "0x959e104e1a4db6317fa58f8295f586e1a978c297");
