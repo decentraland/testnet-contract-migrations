@@ -1,7 +1,8 @@
 import fs from "fs";
-import { deploymentOrder } from "./config";
-import { OriginContractData, ContractName, SourceCodeData } from "../common/types";
+import { ContractName } from "../common/types";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
+import { deploymentOrder } from "./config";
+import { OriginContractData, SourceCodeData } from "./types";
 
 export function loadOriginContractsData() {
   const originContractDataMap = new Map<ContractName, OriginContractData>();
