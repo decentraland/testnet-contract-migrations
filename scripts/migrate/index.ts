@@ -4,7 +4,7 @@ dotenv.config();
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
 import { getRpcUrl } from "./utils";
-import { ChainId, ContractName } from "../common/types";
+import { ContractName } from "../common/types";
 import {
   constructorFactories,
   contractDeployers,
@@ -14,6 +14,7 @@ import {
   postDeployments,
   targetChainId,
 } from "./config";
+import { ChainId } from "./types";
 
 async function main() {
   const ganacheServer = ganache.server({});
