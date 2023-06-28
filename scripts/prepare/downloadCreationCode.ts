@@ -1,13 +1,13 @@
 import fs from "fs";
 import path from "path";
 import * as cheerio from "cheerio";
+import { spawnSync } from "child_process";
 import { creationCodesDir } from "../../common/paths";
 import { ContractName } from "../../common/types";
-import { spawnSync } from "child_process";
-import { contractAddressesMap } from "./config";
+import { originContractAddresses } from "./config";
 
 export async function downloadCreationCode() {
-  for (const [name, address] of contractAddressesMap) {
+  for (const [name, address] of originContractAddresses) {
     console.log("Downloading creation code for", ContractName[name]);
 
     const res = spawnSync(path.resolve(__dirname, "downloadCreationCode.sh"), { env: { CONTRACT_ADDRESS: address } });

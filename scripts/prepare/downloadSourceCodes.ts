@@ -1,10 +1,10 @@
 import { sourceCodesDir } from "../../common/paths";
-import { downloadFromEtherscan } from "./downloadFromEtherscan";
 import { ContractName } from "../../common/types";
-import { contractAddressesMap } from "./config";
+import { downloadFromEtherscan } from "./downloadFromEtherscan";
+import { originContractAddresses } from "./config";
 
 export async function downloadSourceCodes() {
-  for (const [name, address] of contractAddressesMap) {
+  for (const [name, address] of originContractAddresses) {
     console.log("Downloading source code data for", ContractName[name]);
 
     await downloadFromEtherscan(
