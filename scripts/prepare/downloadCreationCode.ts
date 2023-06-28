@@ -2,13 +2,11 @@ import fs from "fs";
 import path from "path";
 import * as cheerio from "cheerio";
 import { contractAddressesMap } from "../../src/config";
-import { creationCodesDir } from "../../src/paths";
-import { ContractName } from "../../src/types";
+import { creationCodesDir, sourceCodesDir } from "../../src/paths";
+import { ContractName, SourceCodeData } from "../../src/types";
 import { spawnSync } from "child_process";
 
 export async function downloadCreationCode() {
-  fs.rmSync(creationCodesDir, { recursive: true, force: true });
-
   for (const [name, address] of contractAddressesMap) {
     console.log("Downloading creation code for", ContractName[name]);
 
@@ -18,7 +16,13 @@ export async function downloadCreationCode() {
 
     const $ = cheerio.load(html);
 
-    const creationCode = $("#verifiedbytecode2").text();
+    let creationCode = $("#verifiedbytecode2").text();
+
+    const sourceCodeDataContent = fs.readFileSync(`${sourceCodesDir}/${ContractName[name]}.json`, "utf-8");
+
+    const sourceCodeData: SourceCodeData = JSON.parse(sourceCodeDataContent);
+
+    creationCode = creationCode.replace(new RegExp(`${sourceCodeData.ConstructorArguments}$`), "");
 
     if (!creationCode) {
       throw new Error("Creation code not found");

@@ -1,10 +1,10 @@
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
 import dotenv from "dotenv";
-import { ChainId, ContractName } from "../../src/types";
-import { deploymentOrder, targetChainId } from "../../src/config";
+import { ChainId, ContractName, DeployedContractAddresses } from "../../src/types";
+import { constructorArgsFactories, deploymentOrder, targetChainId } from "../../src/config";
 import { GANACHE_URL } from "../../src/constants";
-import { loadContractData } from "./loadContractData";
+import { loadOriginContractData } from "./loadOriginContractData";
 
 async function main() {
   dotenv.config();
@@ -28,24 +28,32 @@ async function main() {
       ? await new ethers.BrowserProvider(ganacheProvider).listAccounts()
       : process.env.PRIVATE_KEYS!.split(",").map((pk) => new ethers.Wallet(pk, provider as AbstractProvider));
 
-  const contractDataMap = loadContractData();
+  const originContractDataMap = loadOriginContractData();
 
-  console.log(contractDataMap);
+  const deployedContractAddresses: DeployedContractAddresses = new Map();
 
   for (const contractName of deploymentOrder) {
-    const contractData = contractDataMap.get(contractName)!;
+    const originContractData = originContractDataMap.get(contractName);
 
-    const { sourceCode, creationCode } = contractData.origin;
+    if (!originContractData) {
+      throw new Error("Origin contract data not found");
+    }
+
+    const { sourceCode, creationCode } = originContractData;
 
     const factory = new ethers.ContractFactory(sourceCode.ABI, creationCode[0], signer1);
 
     console.log("Deploying", ContractName[contractName]);
 
-    const contract = await factory.deploy();
+    const getConstructorValues = constructorArgsFactories.get(contractName);
+
+    const constructorValues = getConstructorValues?.(originContractData, deployedContractAddresses) ?? [];
+
+    const contract = await factory.deploy(...constructorValues);
 
     await contract.waitForDeployment();
 
-    contractData.address = await contract.getAddress();
+    deployedContractAddresses.set(contractName, await contract.getAddress());
   }
 
   await ganacheServer.close();

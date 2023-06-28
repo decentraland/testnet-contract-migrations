@@ -5,8 +5,6 @@ import { downloadFromEtherscan } from "./downloadFromEtherscan";
 import { ContractName } from "../../src/types";
 
 export async function downloadSourceCodes() {
-  fs.rmSync(sourceCodesDir, { recursive: true, force: true });
-
   for (const [name, address] of contractAddressesMap) {
     console.log("Downloading source code data for", ContractName[name]);
 

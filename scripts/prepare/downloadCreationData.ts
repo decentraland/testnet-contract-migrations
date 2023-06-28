@@ -5,8 +5,6 @@ import { downloadFromEtherscan } from "./downloadFromEtherscan";
 import { ContractName } from "../../src/types";
 
 export async function downloadCreationData() {
-  fs.rmSync(creationDataDir, { recursive: true, force: true });
-
   for (const [name, address] of contractAddressesMap) {
     console.log("Downloading creation data for", ContractName[name]);
 

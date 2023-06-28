@@ -60,12 +60,11 @@ export type CreationTransaction = {
   transaction: ethers.TransactionResponse;
 };
 
-export type ContractData = {
-  address?: string;
-  origin: {
-    sourceCode: SourceCodeData;
-    creationData: CreationData;
-    creationCode: CreationCode;
-    creationTransaction: CreationTransaction;
-  };
+export type OriginContractData = {
+  sourceCode: SourceCodeData;
+  creationData: CreationData;
+  creationCode: CreationCode;
+  creationTransaction: CreationTransaction;
 };
+
+export type DeployedContractAddresses = Map<ContractName, string>;

@@ -5,8 +5,6 @@ import { creationDataDir, creationTransactionsDir } from "../../src/paths";
 import { ContractName } from "../../src/types";
 
 export async function downloadCreationTransactions() {
-  fs.rmSync(creationTransactionsDir, { recursive: true, force: true });
-
   for (const [name] of contractAddressesMap) {
     console.log("Downloading creation transaction data for", ContractName[name]);
 
