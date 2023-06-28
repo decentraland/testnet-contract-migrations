@@ -7,6 +7,7 @@ import { getRpcUrl } from "../../common/utils";
 import { ChainId, ContractName } from "../../common/types";
 import {
   constructorFactories,
+  contractDeployers,
   deployedContractAddresses,
   deploymentOrder,
   originContractsData,
@@ -43,7 +44,13 @@ async function main() {
 
     const { sourceCode, creationCode } = originContractData;
 
-    const factory = new ethers.ContractFactory(sourceCode.ABI, creationCode[0], signers[0]);
+    const contractDeployer = contractDeployers.get(contractName);
+
+    if (!contractDeployer) {
+      throw new Error("Contract deployer not found");
+    }
+
+    const factory = new ethers.ContractFactory(sourceCode.ABI, creationCode[0], contractDeployer(signers));
 
     console.log("Deploying", ContractName[contractName]);
 
