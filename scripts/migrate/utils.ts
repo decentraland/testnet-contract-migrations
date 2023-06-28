@@ -1,4 +1,4 @@
-import { GANACHE_RPC_URL, SEPOLIA_RPC_URL } from "../common/constants";
+import { GANACHE_RPC_URL, SEPOLIA_RPC_URL } from "./constants";
 import { ChainId } from "../common/types";
 
 export function getRpcUrl(chainId: ChainId): string {
