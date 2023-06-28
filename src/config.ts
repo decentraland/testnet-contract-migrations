@@ -1,4 +1,6 @@
-import { ContractName } from "./types";
+import { ChainId, ContractName } from "./types";
+
+export const targetChainId = ChainId.GANACHE;
 
 export const deploymentOrder = [
   ContractName.MANAToken,

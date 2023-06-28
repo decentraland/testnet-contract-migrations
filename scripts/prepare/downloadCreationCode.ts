@@ -26,6 +26,6 @@ export async function downloadCreationCode() {
 
     fs.mkdirSync(creationCodesDir, { recursive: true });
 
-    fs.writeFileSync(`${creationCodesDir}/${ContractName[name]}.json`, JSON.stringify({ creationCode }, null, 2));
+    fs.writeFileSync(`${creationCodesDir}/${ContractName[name]}.json`, JSON.stringify([creationCode], null, 2));
   }
 }

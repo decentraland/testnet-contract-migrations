@@ -4,7 +4,7 @@ import { creationDataDir } from "../../src/paths";
 import { downloadFromEtherscan } from "./downloadFromEtherscan";
 import { ContractName } from "../../src/types";
 
-export async function downloadCreation() {
+export async function downloadCreationData() {
   fs.rmSync(creationDataDir, { recursive: true, force: true });
 
   for (const [name, address] of contractAddressesMap) {

@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { downloadCreation } from "./downloadCreation";
+import { downloadCreationData } from "./downloadCreationData";
 import { downloadCreationTransactions } from "./downloadCreationTransactions";
 import { downloadSourceCodes } from "./downloadSourceCodes";
 import { downloadCreationCode } from "./downloadCreationCode";
@@ -8,7 +8,7 @@ async function main() {
   dotenv.config();
 
   await downloadCreationCode();
-  await downloadCreation();
+  await downloadCreationData();
   await downloadCreationTransactions();
   await downloadSourceCodes();
 }
