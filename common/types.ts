@@ -47,11 +47,9 @@ export type SourceCodeData = {
   SwarmSource: string;
 };
 
-export type CreationCode = [string];
-
 export type OriginContractData = {
   sourceCode: SourceCodeData;
-  creationCode: CreationCode;
+  creationCode: string;
 };
 
 export type OriginContractDataMap = Map<ContractName, OriginContractData>;
