@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+dotenv.config();
+
 import fs from "fs";
 import { outputDir } from "../../src/paths";
 import { downloadCreationData } from "./downloadCreationData";
@@ -7,8 +9,6 @@ import { downloadSourceCodes } from "./downloadSourceCodes";
 import { downloadCreationCode } from "./downloadCreationCode";
 
 async function main() {
-  dotenv.config();
-
   fs.rmSync(outputDir, { recursive: true, force: true });
 
   await downloadCreationData();

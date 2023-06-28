@@ -67,4 +67,6 @@ export type OriginContractData = {
   creationTransaction: CreationTransaction;
 };
 
+export type OriginContractDataMap = Map<ContractName, OriginContractData>;
+
 export type DeployedContractAddresses = Map<ContractName, string>;

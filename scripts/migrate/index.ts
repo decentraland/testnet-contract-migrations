@@ -1,14 +1,14 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
-import dotenv from "dotenv";
 import { ChainId, ContractName, DeployedContractAddresses } from "../../src/types";
-import { constructorArgsFactories, deploymentOrder, targetChainId } from "../../src/config";
-import { GANACHE_URL } from "../../src/constants";
+import { constructorArgsFactories, deploymentOrder, postDeploymentInstructions, targetChainId } from "../../src/config";
 import { loadOriginContractData } from "./loadOriginContractData";
+import { getRpcUrl } from "../../src/utils";
 
 async function main() {
-  dotenv.config();
-
   const ganacheServer = ganache.server({});
 
   const ganacheProvider = await new Promise<EthereumProvider>((resolve, reject) => {
@@ -21,9 +21,9 @@ async function main() {
     });
   });
 
-  const provider = ethers.getDefaultProvider(targetChainId === ChainId.GANACHE ? GANACHE_URL : targetChainId);
+  const provider = new ethers.JsonRpcProvider(getRpcUrl(targetChainId));
 
-  const [signer1]: Signer[] =
+  const signers: Signer[] =
     targetChainId === ChainId.GANACHE
       ? await new ethers.BrowserProvider(ganacheProvider).listAccounts()
       : process.env.PRIVATE_KEYS!.split(",").map((pk) => new ethers.Wallet(pk, provider as AbstractProvider));
@@ -41,19 +41,25 @@ async function main() {
 
     const { sourceCode, creationCode } = originContractData;
 
-    const factory = new ethers.ContractFactory(sourceCode.ABI, creationCode[0], signer1);
+    const factory = new ethers.ContractFactory(sourceCode.ABI, creationCode[0], signers[0]);
 
     console.log("Deploying", ContractName[contractName]);
 
     const getConstructorValues = constructorArgsFactories.get(contractName);
 
-    const constructorValues = getConstructorValues?.(originContractData, deployedContractAddresses) ?? [];
+    const constructorValues = getConstructorValues?.({ originContractDataMap, deployedContractAddresses }) ?? [];
 
     const contract = await factory.deploy(...constructorValues);
 
     await contract.waitForDeployment();
 
     deployedContractAddresses.set(contractName, await contract.getAddress());
+
+    const onPostDeployment = postDeploymentInstructions.get(contractName);
+
+    if (onPostDeployment) {
+      await onPostDeployment({ originContractDataMap, deployedContractAddresses, signers });
+    }
   }
 
   await ganacheServer.close();

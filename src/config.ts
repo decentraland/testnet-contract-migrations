@@ -1,14 +1,15 @@
 import { ethers } from "ethers";
-import { ChainId, ContractName, DeployedContractAddresses, OriginContractData } from "./types";
+import { ChainId, ContractName, DeployedContractAddresses, OriginContractData, OriginContractDataMap } from "./types";
+import { expect } from "chai";
 
-export const targetChainId = ChainId.GANACHE;
+export const targetChainId: ChainId = ChainId.SEPOLIA;
 
 export const deploymentOrder = [
   ContractName.MANAToken,
-  ContractName.LANDRegistry,
-  ContractName.LANDProxy,
-  ContractName.EstateRegistry,
-  ContractName.EstateProxy,
+  // ContractName.LANDRegistry,
+  // ContractName.LANDProxy,
+  // ContractName.EstateRegistry,
+  // ContractName.EstateProxy,
 ];
 
 export const contractAddressesMap = new Map<ContractName, string>();
@@ -21,14 +22,68 @@ contractAddressesMap.set(ContractName.EstateProxy, "0x959e104e1a4db6317fa58f8295
 
 export const constructorArgsFactories = new Map<
   ContractName,
-  (
-    originContractData: OriginContractData,
-    deployedContractAddresses: DeployedContractAddresses
-  ) => ethers.ContractMethodArgs<any[]>
+  (args: {
+    originContractDataMap: OriginContractDataMap;
+    deployedContractAddresses: DeployedContractAddresses;
+  }) => ethers.ContractMethodArgs<any[]>
 >();
 
-constructorArgsFactories.set(ContractName.EstateProxy, (_originContractData, deployedContractAddresses) => {
+constructorArgsFactories.set(ContractName.EstateProxy, ({ deployedContractAddresses }) => {
   const estateRegistryAddress = deployedContractAddresses.get(ContractName.EstateRegistry);
-  if (!estateRegistryAddress) throw new Error("Address not found");
+
+  if (!estateRegistryAddress) {
+    throw new Error("Address not found");
+  }
+
   return [estateRegistryAddress];
 });
+
+export const postDeploymentInstructions = new Map<
+  ContractName,
+  (args: {
+    originContractDataMap: OriginContractDataMap;
+    deployedContractAddresses: DeployedContractAddresses;
+    signers: ethers.Signer[];
+  }) => Promise<void>
+>();
+
+postDeploymentInstructions.set(
+  ContractName.MANAToken,
+  async ({ originContractDataMap, deployedContractAddresses, signers }) => {
+    const manaTokenAddress = deployedContractAddresses.get(ContractName.MANAToken);
+
+    if (!manaTokenAddress) {
+      throw new Error("Address not found");
+    }
+
+    const manaTokenAbi = originContractDataMap.get(ContractName.MANAToken)?.sourceCode.ABI;
+
+    if (!manaTokenAbi) {
+      throw new Error("ABI not found");
+    }
+
+    const minter = signers[0];
+
+    const minterAddress = await minter.getAddress();
+
+    const mintAmount = ethers.parseEther("21000000");
+
+    const manaToken = new ethers.Contract(manaTokenAddress, manaTokenAbi, minter);
+
+    const mintTx = await manaToken.mint(minterAddress, mintAmount);
+
+    await mintTx.wait();
+
+    const minterBalance = await manaToken.balanceOf(minterAddress);
+
+    expect(minterBalance).to.equal(mintAmount);
+
+    const finishMintingTx = await manaToken.finishMinting();
+
+    await finishMintingTx.wait();
+
+    const mintingFinished = await manaToken.mintingFinished();
+
+    expect(mintingFinished).to.equal(true);
+  }
+);
