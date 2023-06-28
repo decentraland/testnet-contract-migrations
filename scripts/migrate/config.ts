@@ -1,10 +1,11 @@
 import { ethers } from "ethers";
-import { ChainId, ContractName } from "../common/types";
+import { ContractName } from "../common/types";
 import { loadOriginContractsData } from "./loadOriginContractsData";
 import { ConstructorFactory } from "./constructors/ConstructorFactory";
 import { EstateProxyConstructorFactory } from "./constructors/impl/EstateProxyConstructorFactory";
 import { PostDeployment } from "./postDeployments/PostDeployment";
 import { MANATokenPostDeployment } from "./postDeployments/impl/MANATokenPostDeployment";
+import { ChainId } from "./types";
 
 export const targetChainId: ChainId = ChainId.GANACHE;
 
