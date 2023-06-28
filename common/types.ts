@@ -47,26 +47,11 @@ export type SourceCodeData = {
   SwarmSource: string;
 };
 
-export type CreationData = {
-  contractAddress: string;
-  contractCreator: string;
-  txHash: string;
-};
-
 export type CreationCode = [string];
-
-export type CreationTransaction = {
-  receipt: ethers.TransactionReceipt;
-  transaction: ethers.TransactionResponse;
-};
 
 export type OriginContractData = {
   sourceCode: SourceCodeData;
-  creationData: CreationData;
   creationCode: CreationCode;
-  creationTransaction: CreationTransaction;
 };
 
 export type OriginContractDataMap = Map<ContractName, OriginContractData>;
-
-export type DeployedContractAddresses = Map<ContractName, string>;

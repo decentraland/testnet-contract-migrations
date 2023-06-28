@@ -1,8 +1,7 @@
-import fs from "fs";
-import { contractAddressesMap } from "../../src/config";
-import { sourceCodesDir } from "../../src/paths";
+import { sourceCodesDir } from "../../common/paths";
 import { downloadFromEtherscan } from "./downloadFromEtherscan";
-import { ContractName } from "../../src/types";
+import { ContractName } from "../../common/types";
+import { contractAddressesMap } from "./config";
 
 export async function downloadSourceCodes() {
   for (const [name, address] of contractAddressesMap) {

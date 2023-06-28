@@ -3,10 +3,16 @@ dotenv.config();
 
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
-import { ChainId, ContractName, DeployedContractAddresses } from "../../src/types";
-import { constructorArgsFactories, deploymentOrder, postDeploymentInstructions, targetChainId } from "../../src/config";
-import { loadOriginContractData } from "./loadOriginContractData";
-import { getRpcUrl } from "../../src/utils";
+import { getRpcUrl } from "../../common/utils";
+import { ChainId, ContractName } from "../../common/types";
+import {
+  constructorFactories,
+  deployedContractAddresses,
+  deploymentOrder,
+  originContractsData,
+  postDeployments,
+  targetChainId,
+} from "./config";
 
 async function main() {
   const ganacheServer = ganache.server({});
@@ -28,12 +34,8 @@ async function main() {
       ? await new ethers.BrowserProvider(ganacheProvider).listAccounts()
       : process.env.PRIVATE_KEYS!.split(",").map((pk) => new ethers.Wallet(pk, provider as AbstractProvider));
 
-  const originContractDataMap = loadOriginContractData();
-
-  const deployedContractAddresses: DeployedContractAddresses = new Map();
-
   for (const contractName of deploymentOrder) {
-    const originContractData = originContractDataMap.get(contractName);
+    const originContractData = originContractsData.get(contractName);
 
     if (!originContractData) {
       throw new Error("Origin contract data not found");
@@ -45,20 +47,22 @@ async function main() {
 
     console.log("Deploying", ContractName[contractName]);
 
-    const getConstructorValues = constructorArgsFactories.get(contractName);
+    const constructorFactory = constructorFactories.get(contractName);
 
-    const constructorValues = getConstructorValues?.({ originContractDataMap, deployedContractAddresses }) ?? [];
+    const constructorValues = constructorFactory?.getConstructorArgs() ?? [];
 
     const contract = await factory.deploy(...constructorValues);
 
     await contract.waitForDeployment();
 
-    deployedContractAddresses.set(contractName, await contract.getAddress());
+    const contractAddress = await contract.getAddress();
 
-    const onPostDeployment = postDeploymentInstructions.get(contractName);
+    deployedContractAddresses.set(contractName, contractAddress);
 
-    if (onPostDeployment) {
-      await onPostDeployment({ originContractDataMap, deployedContractAddresses, signers });
+    const postDeployment = postDeployments.get(contractName);
+
+    if (postDeployment) {
+      await postDeployment.exec(signers);
     }
   }
 

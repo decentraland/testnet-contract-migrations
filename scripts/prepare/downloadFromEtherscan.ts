@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import fs from "fs";
-import { ContractName } from "../../src/types";
+import { ContractName } from "../../common/types";
 
 export async function downloadFromEtherscan(url: string, outputDir: string, contractName: ContractName) {
   const res = await fetch(url);
