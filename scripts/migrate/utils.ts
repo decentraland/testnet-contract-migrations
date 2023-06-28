@@ -1,5 +1,5 @@
-import { GANACHE_RPC_URL, SEPOLIA_RPC_URL } from "./constants";
-import { ChainId } from "./types";
+import { GANACHE_RPC_URL, SEPOLIA_RPC_URL } from "../common/constants";
+import { ChainId } from "../common/types";
 
 export function getRpcUrl(chainId: ChainId): string {
   switch (chainId) {
