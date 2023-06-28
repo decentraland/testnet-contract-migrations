@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import { expect } from "chai";
-import { ContractName } from "../../../../common/types";
+import { ContractName } from "../../../common/types";
 import { deployedContractAddresses, originContractsData } from "../../config";
 import { PostDeployment } from "../PostDeployment";
 

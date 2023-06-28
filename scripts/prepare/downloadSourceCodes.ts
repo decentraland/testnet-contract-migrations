@@ -1,5 +1,5 @@
-import { sourceCodesDir } from "../../common/paths";
-import { ContractName } from "../../common/types";
+import { sourceCodesDir } from "../common/paths";
+import { ContractName } from "../common/types";
 import { downloadFromEtherscan } from "./downloadFromEtherscan";
 import { originContractAddresses } from "./config";
 

@@ -1,4 +1,4 @@
-import { ContractName } from "../../common/types";
+import { ContractName } from "../common/types";
 
 export const originContractAddresses = new Map<ContractName, string>();
 

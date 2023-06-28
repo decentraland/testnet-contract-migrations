@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { SourceCodeData } from "../../common/types";
+import { SourceCodeData } from "../common/types";
 
 export async function verifyContract(
   contractAddress: string,

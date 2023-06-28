@@ -3,8 +3,8 @@ dotenv.config();
 
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
-import { getRpcUrl } from "../../common/utils";
-import { ChainId, ContractName } from "../../common/types";
+import { getRpcUrl } from "../common/utils";
+import { ChainId, ContractName } from "../common/types";
 import {
   constructorFactories,
   contractDeployers,

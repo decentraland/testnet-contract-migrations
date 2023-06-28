@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { ChainId, ContractName } from "../../common/types";
+import { ChainId, ContractName } from "../common/types";
 import { loadOriginContractsData } from "./loadOriginContractsData";
 import { ConstructorFactory } from "./constructors/ConstructorFactory";
 import { EstateProxyConstructorFactory } from "./constructors/impl/EstateProxyConstructorFactory";

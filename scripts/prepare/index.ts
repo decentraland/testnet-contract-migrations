@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import fs from "fs";
-import { prepareDownloadsDir } from "../../common/paths";
+import { prepareDownloadsDir } from "../common/paths";
 import { downloadSourceCodes } from "./downloadSourceCodes";
 import { downloadCreationCode } from "./downloadCreationCode";
 

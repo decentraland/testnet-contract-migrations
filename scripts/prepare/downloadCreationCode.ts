@@ -2,8 +2,8 @@ import fs from "fs";
 import path from "path";
 import * as cheerio from "cheerio";
 import { spawnSync } from "child_process";
-import { creationCodesDir } from "../../common/paths";
-import { ContractName } from "../../common/types";
+import { creationCodesDir } from "../common/paths";
+import { ContractName } from "../common/types";
 import { originContractAddresses } from "./config";
 
 export async function downloadCreationCode() {
