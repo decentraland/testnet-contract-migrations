@@ -1,7 +1,6 @@
 import fs from "fs";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
 import { ContractName } from "../common/types";
-import { deploymentOrder } from "./config";
 import { ChainId, OriginContractData, SourceCodeData } from "./types";
 
 export const GANACHE_RPC_URL = "http://localhost:8545";
@@ -18,16 +17,16 @@ export function getRpcUrl(chainId: ChainId): string {
   }
 }
 
-export function loadOriginContractsData() {
+export function loadOriginContractsData(contracts: ContractName[]) {
   const originContractDataMap = new Map<ContractName, OriginContractData>();
 
-  for (const contractName of deploymentOrder) {
-    console.log("Loading contract data for", ContractName[contractName]);
+  for (const contract of contracts) {
+    console.log("Loading contract data for", ContractName[contract]);
 
-    const sourceCode = load<SourceCodeData>(sourceCodesDir, contractName);
-    const creationCode = removeConstructorArgs(load<[string]>(creationCodesDir, contractName)[0], sourceCode);
+    const sourceCode = load<SourceCodeData>(sourceCodesDir, contract);
+    const creationCode = removeConstructorArgs(load<[string]>(creationCodesDir, contract)[0], sourceCode);
 
-    originContractDataMap.set(contractName, {
+    originContractDataMap.set(contract, {
       creationCode,
       sourceCode,
     });
@@ -40,7 +39,7 @@ export function loadOriginContractsData() {
   }
 
   function removeConstructorArgs(creationCode: string, sourceCodeData: SourceCodeData): string {
-    return creationCode[0].replace(new RegExp(`${sourceCodeData.ConstructorArguments}$`), "");
+    return creationCode.replace(new RegExp(`${sourceCodeData.ConstructorArguments}$`), "");
   }
 }
 

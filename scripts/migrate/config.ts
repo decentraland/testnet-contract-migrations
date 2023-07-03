@@ -17,7 +17,7 @@ export const deploymentOrder = [
   ContractName.EstateProxy,
 ];
 
-export const originContractsData = loadOriginContractsData();
+export const originContractsData = loadOriginContractsData(deploymentOrder);
 
 export const deployedContractAddresses = new Map<ContractName, string>();
 
