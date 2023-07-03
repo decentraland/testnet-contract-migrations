@@ -1,22 +1,13 @@
 import { ethers } from "ethers";
 import { expect } from "chai";
 import { ContractName } from "../../../common/types";
-import { deployedContractAddresses, originContractsData } from "../../config";
 import { PostDeployment } from "../PostDeployment";
 
-export class MANATokenPostDeployment implements PostDeployment {
+export class MANATokenPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const manaTokenAddress = deployedContractAddresses.get(ContractName.MANAToken);
+    const manaTokenAddress = this.getAddress(ContractName.MANAToken);
 
-    if (!manaTokenAddress) {
-      throw new Error("Address not found");
-    }
-
-    const manaTokenAbi = originContractsData.get(ContractName.MANAToken)?.sourceCode.ABI;
-
-    if (!manaTokenAbi) {
-      throw new Error("ABI not found");
-    }
+    const manaTokenAbi = this.getAbi(ContractName.MANAToken);
 
     const minter = signers[0];
 
