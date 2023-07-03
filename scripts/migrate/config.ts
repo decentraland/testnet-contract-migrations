@@ -5,7 +5,12 @@ import { EstateProxyConstructorFactory } from "./constructors/impl/EstateProxyCo
 import { PostDeployment } from "./postDeployments/PostDeployment";
 import { ChainId } from "./types";
 import { loadOriginContractsData } from "./utils";
-import { LANDProxyPostDeployment, LANDRegistryPostDeployment, MANATokenPostDeployment } from "./postDeployments/impl";
+import {
+  EstateRegistryPostDeployment,
+  LANDProxyPostDeployment,
+  LANDRegistryPostDeployment,
+  MANATokenPostDeployment,
+} from "./postDeployments/impl";
 
 export const targetChainId: ChainId = (() => {
   const env = process.env.TARGET_CHAIN_ID;
@@ -58,6 +63,7 @@ constructorFactories.set(ContractName.EstateProxy, new EstateProxyConstructorFac
 postDeployments.set(ContractName.MANAToken, new MANATokenPostDeployment());
 postDeployments.set(ContractName.LANDRegistry, new LANDRegistryPostDeployment());
 postDeployments.set(ContractName.LANDProxy, new LANDProxyPostDeployment());
+postDeployments.set(ContractName.EstateRegistry, new EstateRegistryPostDeployment());
 
 // Utils
 
