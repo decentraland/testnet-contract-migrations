@@ -7,7 +7,21 @@ import { MANATokenPostDeployment } from "./postDeployments/impl/MANATokenPostDep
 import { ChainId } from "./types";
 import { loadOriginContractsData } from "./utils";
 
-export const targetChainId: ChainId = ChainId.GANACHE;
+export const targetChainId: ChainId = (() => {
+  const env = process.env.TARGET_CHAIN_ID;
+
+  if (!env) {
+    throw new Error("TARGET_CHAIN_ID env var not found");
+  }
+
+  const num = Number(env);
+
+  if (!ChainId[num]) {
+    throw new Error("Invalid TARGET_CHAIN_ID");
+  }
+
+  return num;
+})();
 
 export const deploymentOrder = [
   ContractName.MANAToken,
