@@ -3,7 +3,7 @@ dotenv.config();
 
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
-import { getRpcUrl } from "./utils";
+import { getRpcUrl, verifyContract } from "./utils";
 import { ContractName } from "../common/types";
 import {
   constructorFactories,
@@ -71,6 +71,12 @@ async function main() {
 
     if (postDeployment) {
       await postDeployment.exec(signers);
+    }
+
+    if (targetChainId !== ChainId.GANACHE) {
+      const constructorHex = constructorFactory?.getConstructorArgsHex() ?? "";
+
+      await verifyContract(contractAddress, sourceCode, constructorHex);
     }
   }
 
