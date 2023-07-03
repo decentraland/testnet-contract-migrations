@@ -5,7 +5,7 @@ import { EstateProxyConstructorFactory } from "./constructors/impl/EstateProxyCo
 import { PostDeployment } from "./postDeployments/PostDeployment";
 import { ChainId } from "./types";
 import { loadOriginContractsData } from "./utils";
-import { LANDRegistryPostDeployment, MANATokenPostDeployment } from "./postDeployments/impl";
+import { LANDProxyPostDeployment, LANDRegistryPostDeployment, MANATokenPostDeployment } from "./postDeployments/impl";
 
 export const targetChainId: ChainId = (() => {
   const env = process.env.TARGET_CHAIN_ID;
@@ -24,9 +24,9 @@ export const targetChainId: ChainId = (() => {
 })();
 
 export const deploymentOrder = [
-  ContractName.MANAToken,
+  // ContractName.MANAToken,
   ContractName.LANDRegistry,
-  // ContractName.LANDProxy,
+  ContractName.LANDProxy,
   // ContractName.EstateRegistry,
   // ContractName.EstateProxy,
 ];
@@ -57,6 +57,7 @@ constructorFactories.set(ContractName.EstateProxy, new EstateProxyConstructorFac
 
 postDeployments.set(ContractName.MANAToken, new MANATokenPostDeployment());
 postDeployments.set(ContractName.LANDRegistry, new LANDRegistryPostDeployment());
+postDeployments.set(ContractName.LANDProxy, new LANDProxyPostDeployment());
 
 // Utils
 
