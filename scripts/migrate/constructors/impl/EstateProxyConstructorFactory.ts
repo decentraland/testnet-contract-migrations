@@ -1,16 +1,9 @@
-import { ContractMethodArgs } from "ethers";
+import { ContractMethodArgs, getAddress } from "ethers";
 import { ConstructorFactory } from "../ConstructorFactory";
-import { deployedContractAddresses } from "../../config";
 import { ContractName } from "../../../common/types";
 
-export class EstateProxyConstructorFactory implements ConstructorFactory {
+export class EstateProxyConstructorFactory extends ConstructorFactory {
   getConstructorArgs(): ContractMethodArgs<any[]> {
-    const estateRegistryAddress = deployedContractAddresses.get(ContractName.EstateRegistry);
-
-    if (!estateRegistryAddress) {
-      throw new Error("Address not found");
-    }
-
-    return [estateRegistryAddress];
+    return [this.getAddress(ContractName.EstateRegistry)];
   }
 }

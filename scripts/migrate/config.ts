@@ -24,11 +24,11 @@ export const targetChainId: ChainId = (() => {
 })();
 
 export const deploymentOrder = [
-  // ContractName.MANAToken,
+  ContractName.MANAToken,
   ContractName.LANDRegistry,
   ContractName.LANDProxy,
-  // ContractName.EstateRegistry,
-  // ContractName.EstateProxy,
+  ContractName.EstateRegistry,
+  ContractName.EstateProxy,
 ];
 
 export const originContractsData = loadOriginContractsData(deploymentOrder);
