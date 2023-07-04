@@ -8,6 +8,7 @@ import {
   ERC721BidPostDeployment,
   EstateProxyPostDeployment,
   EstateRegistryPostDeployment,
+  ExclusiveMasksCollectionPostDeployment,
   LANDProxyPostDeployment,
   LANDRegistryPostDeployment,
   MANATokenPostDeployment,
@@ -99,6 +100,7 @@ postDeployments.set(ContractName.MarketplaceProxy, new MarketplaceProxyPostDeplo
 postDeployments.set(ContractName.EstateRegistry, new EstateRegistryPostDeployment());
 postDeployments.set(ContractName.EstateProxy, new EstateProxyPostDeployment());
 postDeployments.set(ContractName.ERC721Bid, new ERC721BidPostDeployment());
+postDeployments.set(ContractName.ExclusiveMasksCollection, new ExclusiveMasksCollectionPostDeployment());
 
 // Misc
 

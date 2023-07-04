@@ -6,3 +6,4 @@ export { MarketplaceProxyPostDeployment } from "./MarketplaceProxyPostDeployment
 export { EstateRegistryPostDeployment } from "./EstateRegistryPostDeployment";
 export { EstateProxyPostDeployment } from "./EstateProxyPostDeployment";
 export { ERC721BidPostDeployment } from "./ERC721BidPostDeployment";
+export { ExclusiveMasksCollectionPostDeployment } from "./ExclusiveMasksCollectionPostDeployment";
