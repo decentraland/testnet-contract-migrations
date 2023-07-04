@@ -1,4 +1,5 @@
 import fs from "fs";
+import { ethers } from "ethers";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
 import { ContractName } from "../common/types";
 import { ChainId, OriginContractData, SourceCodeData } from "./types";
@@ -75,4 +76,8 @@ export async function verifyContract(
       `Failed to verify contract. status: ${json.status}, message: ${json.message}, result: ${json.result}`
     );
   }
+}
+
+export function pickSigner(index: number) {
+  return (signers: ethers.Signer[]) => signers[index];
 }

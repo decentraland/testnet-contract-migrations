@@ -4,7 +4,7 @@ import { ConstructorFactory } from "./constructors/ConstructorFactory";
 import { EstateProxyConstructorFactory } from "./constructors/impl/EstateProxyConstructorFactory";
 import { PostDeployment } from "./postDeployments/PostDeployment";
 import { ChainId } from "./types";
-import { loadOriginContractsData } from "./utils";
+import { loadOriginContractsData, pickSigner } from "./utils";
 import {
   EstateProxyPostDeployment,
   EstateRegistryPostDeployment,
@@ -66,9 +66,3 @@ postDeployments.set(ContractName.LANDRegistry, new LANDRegistryPostDeployment())
 postDeployments.set(ContractName.LANDProxy, new LANDProxyPostDeployment());
 postDeployments.set(ContractName.EstateRegistry, new EstateRegistryPostDeployment());
 postDeployments.set(ContractName.EstateProxy, new EstateProxyPostDeployment());
-
-// Utils
-
-function pickSigner(index: number) {
-  return (signers: ethers.Signer[]) => signers[index];
-}
