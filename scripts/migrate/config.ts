@@ -5,6 +5,7 @@ import { ConstructorFactory } from "./constructors/ConstructorFactory";
 import { PostDeployment } from "./postDeployments/PostDeployment";
 import { ChainId, OriginContractData, SourceCodeData } from "./types";
 import {
+  ERC721BidPostDeployment,
   EstateProxyPostDeployment,
   EstateRegistryPostDeployment,
   LANDProxyPostDeployment,
@@ -14,7 +15,11 @@ import {
   MarketplaceProxyPostDeployment,
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
-import { ERC721BidProxyConstructorFactory, EstateProxyConstructorFactory, MarketplaceProxyConstructorFactory } from "./constructors/impl";
+import {
+  ERC721BidProxyConstructorFactory,
+  EstateProxyConstructorFactory,
+  MarketplaceProxyConstructorFactory,
+} from "./constructors/impl";
 
 export const targetChainId: ChainId = (() => {
   const env = process.env.TARGET_CHAIN_ID;
@@ -91,6 +96,7 @@ postDeployments.set(ContractName.Marketplace, new MarketplacePostDeployment());
 postDeployments.set(ContractName.MarketplaceProxy, new MarketplaceProxyPostDeployment());
 postDeployments.set(ContractName.EstateRegistry, new EstateRegistryPostDeployment());
 postDeployments.set(ContractName.EstateProxy, new EstateProxyPostDeployment());
+postDeployments.set(ContractName.ERC721Bid, new ERC721BidPostDeployment());
 
 // Misc
 
