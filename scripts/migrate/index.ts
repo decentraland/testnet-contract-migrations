@@ -45,6 +45,8 @@ async function main() {
   fs.rmSync(migrationsDir, { recursive: true, force: true });
 
   for (const contractName of deploymentOrder) {
+    console.log("Deploying", ContractName[contractName]);
+
     const originContractData = originContractsData.get(contractName);
 
     if (!originContractData) {
@@ -57,11 +59,15 @@ async function main() {
 
     const factory = new ethers.ContractFactory(sourceCode.ABI, creationCode, contractDeployer?.(signers) ?? signers[0]);
 
-    console.log("Deploying", ContractName[contractName]);
+    console.log("Deploying contract...");
 
     const constructorFactory = constructorFactories.get(contractName);
 
     const constructorValues = constructorFactory?.getConstructorArgs() ?? [];
+
+    if (constructorValues.length) {
+      console.log("With constructor arguments: ", constructorValues);
+    }
 
     const contract = await factory.deploy(...constructorValues);
 
@@ -71,17 +77,25 @@ async function main() {
 
     deployedContractAddresses.set(contractName, contractAddress);
 
+    console.log("Contract deployed at:", contractAddress);
+
     const postDeployment = postDeployments.get(contractName);
 
     if (postDeployment) {
+      console.log("Running post deployment...");
+
       await postDeployment.exec(signers);
     }
 
     if (targetChainId !== ChainId.GANACHE) {
+      console.log("Verifying contract...");
+
       const constructorHex = constructorFactory?.getConstructorArgsHex() ?? "";
 
       await verifyContract(contractAddress, sourceCode, constructorHex);
     }
+
+    console.log("Storing result...");
 
     fs.mkdirSync(migrationsDir, { recursive: true });
 
@@ -89,6 +103,8 @@ async function main() {
       `${migrationsDir}/${ContractName[contractName]}.json`,
       JSON.stringify({ address: contractAddress }, null, 2)
     );
+
+    console.log(`Finished ${ContractName[contractName]} deployment :D\n`);
   }
 
   await ganacheServer.close();
