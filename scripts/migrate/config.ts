@@ -11,6 +11,7 @@ import {
   LANDRegistryPostDeployment,
   MANATokenPostDeployment,
   MarketplacePostDeployment,
+  MarketplaceProxyPostDeployment,
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
 import { EstateProxyConstructorFactory, MarketplaceProxyConstructorFactory } from "./constructors/impl";
@@ -86,6 +87,7 @@ postDeployments.set(ContractName.MANAToken, new MANATokenPostDeployment());
 postDeployments.set(ContractName.LANDRegistry, new LANDRegistryPostDeployment());
 postDeployments.set(ContractName.LANDProxy, new LANDProxyPostDeployment());
 postDeployments.set(ContractName.Marketplace, new MarketplacePostDeployment());
+postDeployments.set(ContractName.MarketplaceProxy, new MarketplaceProxyPostDeployment());
 postDeployments.set(ContractName.EstateRegistry, new EstateRegistryPostDeployment());
 postDeployments.set(ContractName.EstateProxy, new EstateProxyPostDeployment());
 
