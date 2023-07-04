@@ -5,10 +5,10 @@ import { deployedContractAddresses, originContractsData } from "../config";
 export abstract class ConstructorFactory {
   abstract name: ContractName;
 
-  abstract getConstructorArgs(): ethers.ContractMethodArgs<any[]>;
+  abstract getConstructorArgs(signers: ethers.Signer[]): Promise<ethers.ContractMethodArgs<any[]>>;
 
-  getConstructorArgsHex = (): string => {
-    const args = this.getConstructorArgs();
+  getConstructorArgsHex = async (signers: ethers.Signer[]): Promise<string> => {
+    const args = await this.getConstructorArgs(signers);
     const abi = this.getAbi(this.name);
 
     return new ethers.Interface(abi).encodeDeploy(args);

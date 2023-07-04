@@ -63,13 +63,13 @@ async function main() {
 
     const constructorFactory = constructorFactories.get(contractName);
 
-    const constructorValues = constructorFactory?.getConstructorArgs() ?? [];
+    const constructorArgs = constructorFactory ? await constructorFactory.getConstructorArgs(signers) : [];
 
-    if (constructorValues.length) {
-      console.log("With constructor arguments: ", constructorValues);
+    if (constructorArgs.length) {
+      console.log("With constructor arguments: ", constructorArgs);
     }
 
-    const contract = await factory.deploy(...constructorValues);
+    const contract = await factory.deploy(...constructorArgs);
 
     await contract.waitForDeployment();
 
@@ -90,9 +90,9 @@ async function main() {
     if (targetChainId !== ChainId.GANACHE) {
       console.log("Verifying contract...");
 
-      const constructorHex = constructorFactory?.getConstructorArgsHex() ?? "";
+      const constructorArgsHex = constructorFactory ? await constructorFactory.getConstructorArgsHex(signers) : "";
 
-      await verifyContract(contractAddress, sourceCode, constructorHex);
+      await verifyContract(contractAddress, sourceCode, constructorArgsHex);
     }
 
     console.log("Storing result...");

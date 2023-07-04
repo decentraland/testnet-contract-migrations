@@ -14,7 +14,7 @@ import {
   MarketplaceProxyPostDeployment,
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
-import { EstateProxyConstructorFactory, MarketplaceProxyConstructorFactory } from "./constructors/impl";
+import { ERC721BidProxyConstructorFactory, EstateProxyConstructorFactory, MarketplaceProxyConstructorFactory } from "./constructors/impl";
 
 export const targetChainId: ChainId = (() => {
   const env = process.env.TARGET_CHAIN_ID;
@@ -80,6 +80,7 @@ contractDeployers.set(ContractName.EstateProxy, pickSigner(1));
 
 constructorFactories.set(ContractName.EstateProxy, new EstateProxyConstructorFactory());
 constructorFactories.set(ContractName.MarketplaceProxy, new MarketplaceProxyConstructorFactory());
+constructorFactories.set(ContractName.ERC721Bid, new ERC721BidProxyConstructorFactory());
 
 // Post Deployments
 
