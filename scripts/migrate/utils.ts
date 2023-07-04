@@ -1,8 +1,4 @@
-import fs from "fs";
-import { ethers } from "ethers";
-import { creationCodesDir, sourceCodesDir } from "../common/paths";
-import { ContractName } from "../common/types";
-import { ChainId, OriginContractData, SourceCodeData } from "./types";
+import { ChainId, SourceCodeData } from "./types";
 
 export const GANACHE_RPC_URL = "http://localhost:8545";
 export const SEPOLIA_RPC_URL = `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`;
@@ -15,32 +11,6 @@ export function getRpcUrl(chainId: ChainId): string {
       return SEPOLIA_RPC_URL;
     default:
       throw new Error("Chain ID not supported");
-  }
-}
-
-export function loadOriginContractsData(contracts: ContractName[]) {
-  const originContractDataMap = new Map<ContractName, OriginContractData>();
-
-  for (const contract of contracts) {
-    console.log("Loading contract data for", ContractName[contract]);
-
-    const sourceCode = load<SourceCodeData>(sourceCodesDir, contract);
-    const creationCode = removeConstructorArgs(load<[string]>(creationCodesDir, contract)[0], sourceCode);
-
-    originContractDataMap.set(contract, {
-      creationCode,
-      sourceCode,
-    });
-  }
-
-  return originContractDataMap;
-
-  function load<T>(dir: string, contractName: ContractName): T {
-    return JSON.parse(fs.readFileSync(`${dir}/${ContractName[contractName]}.json`, `utf-8`));
-  }
-
-  function removeConstructorArgs(creationCode: string, sourceCodeData: SourceCodeData): string {
-    return creationCode.replace(new RegExp(`${sourceCodeData.ConstructorArguments}$`), "");
   }
 }
 
@@ -76,8 +46,4 @@ export async function verifyContract(
       `Failed to verify contract. status: ${json.status}, message: ${json.message}, result: ${json.result}`
     );
   }
-}
-
-export function pickSigner(index: number) {
-  return (signers: ethers.Signer[]) => signers[index];
 }

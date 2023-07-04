@@ -1,10 +1,10 @@
 import { ethers } from "ethers";
+import fs from "fs";
 import { ContractName } from "../common/types";
 import { ConstructorFactory } from "./constructors/ConstructorFactory";
 import { EstateProxyConstructorFactory } from "./constructors/impl/EstateProxyConstructorFactory";
 import { PostDeployment } from "./postDeployments/PostDeployment";
-import { ChainId } from "./types";
-import { loadOriginContractsData, pickSigner } from "./utils";
+import { ChainId, OriginContractData, SourceCodeData } from "./types";
 import {
   EstateProxyPostDeployment,
   EstateRegistryPostDeployment,
@@ -12,6 +12,7 @@ import {
   LANDRegistryPostDeployment,
   MANATokenPostDeployment,
 } from "./postDeployments/impl";
+import { creationCodesDir, sourceCodesDir } from "../common/paths";
 
 export const targetChainId: ChainId = (() => {
   const env = process.env.TARGET_CHAIN_ID;
@@ -37,7 +38,7 @@ export const deploymentOrder = [
   ContractName.EstateProxy,
 ];
 
-export const originContractsData = loadOriginContractsData(deploymentOrder);
+export const originContractsData = loadOriginContractsData();
 
 export const deployedContractAddresses = new Map<ContractName, string>();
 
@@ -66,3 +67,35 @@ postDeployments.set(ContractName.LANDRegistry, new LANDRegistryPostDeployment())
 postDeployments.set(ContractName.LANDProxy, new LANDProxyPostDeployment());
 postDeployments.set(ContractName.EstateRegistry, new EstateRegistryPostDeployment());
 postDeployments.set(ContractName.EstateProxy, new EstateProxyPostDeployment());
+
+// Misc
+
+function loadOriginContractsData() {
+  const originContractDataMap = new Map<ContractName, OriginContractData>();
+
+  for (const contract of deploymentOrder) {
+    console.log("Loading contract data for", ContractName[contract]);
+
+    const sourceCode = load<SourceCodeData>(sourceCodesDir, contract);
+    const creationCode = removeConstructorArgs(load<[string]>(creationCodesDir, contract)[0], sourceCode);
+
+    originContractDataMap.set(contract, {
+      creationCode,
+      sourceCode,
+    });
+  }
+
+  return originContractDataMap;
+
+  function load<T>(dir: string, contractName: ContractName): T {
+    return JSON.parse(fs.readFileSync(`${dir}/${ContractName[contractName]}.json`, `utf-8`));
+  }
+
+  function removeConstructorArgs(creationCode: string, sourceCodeData: SourceCodeData): string {
+    return creationCode.replace(new RegExp(`${sourceCodeData.ConstructorArguments}$`), "");
+  }
+}
+
+function pickSigner(index: number) {
+  return (signers: ethers.Signer[]) => signers[index];
+}
