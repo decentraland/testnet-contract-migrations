@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import fs from "fs";
 import { ContractName } from "../common/types";
 import { ConstructorFactory } from "./constructors/ConstructorFactory";
-import { EstateProxyConstructorFactory } from "./constructors/impl/EstateProxyConstructorFactory";
 import { PostDeployment } from "./postDeployments/PostDeployment";
 import { ChainId, OriginContractData, SourceCodeData } from "./types";
 import {
@@ -14,6 +13,7 @@ import {
   MarketplacePostDeployment,
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
+import { EstateProxyConstructorFactory, MarketplaceProxyConstructorFactory } from "./constructors/impl";
 
 export const targetChainId: ChainId = (() => {
   const env = process.env.TARGET_CHAIN_ID;
@@ -72,11 +72,13 @@ export const postDeployments = new Map<ContractName, PostDeployment>();
 // Contract Deployers
 
 contractDeployers.set(ContractName.LANDProxy, pickSigner(1));
+contractDeployers.set(ContractName.MarketplaceProxy, pickSigner(1));
 contractDeployers.set(ContractName.EstateProxy, pickSigner(1));
 
 // Constructor Factories
 
 constructorFactories.set(ContractName.EstateProxy, new EstateProxyConstructorFactory());
+constructorFactories.set(ContractName.MarketplaceProxy, new MarketplaceProxyConstructorFactory());
 
 // Post Deployments
 
