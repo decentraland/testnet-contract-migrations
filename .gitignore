@@ -1,3 +1,4 @@
 node_modules
 .env
 scripts/prepare/downloads
+scripts/migrate/migrations
