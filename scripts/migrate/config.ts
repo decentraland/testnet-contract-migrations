@@ -18,6 +18,7 @@ import { creationCodesDir, sourceCodesDir } from "../common/paths";
 import {
   ERC721BidProxyConstructorFactory,
   EstateProxyConstructorFactory,
+  ExclusiveMasksCollectionConstructorFactory,
   MarketplaceProxyConstructorFactory,
 } from "./constructors/impl";
 
@@ -86,6 +87,7 @@ contractDeployers.set(ContractName.EstateProxy, pickSigner(1));
 constructorFactories.set(ContractName.EstateProxy, new EstateProxyConstructorFactory());
 constructorFactories.set(ContractName.MarketplaceProxy, new MarketplaceProxyConstructorFactory());
 constructorFactories.set(ContractName.ERC721Bid, new ERC721BidProxyConstructorFactory());
+constructorFactories.set(ContractName.ExclusiveMasksCollection, new ExclusiveMasksCollectionConstructorFactory());
 
 // Post Deployments
 
