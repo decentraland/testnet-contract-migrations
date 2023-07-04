@@ -17,13 +17,17 @@ export class EstateProxyPostDeployment extends PostDeployment {
 
     const landProxyAddress = this.getAddress(ContractName.LANDProxy);
 
-    const initializeTx = await estateRegistry["initialize(string,string,address)"](
+    const initialize1Tx = await estateRegistry["initialize(string,string,address)"](
       "Estate Impl",
       "EST",
       landProxyAddress
     );
 
-    await initializeTx.wait();
+    await initialize1Tx.wait();
+
+    const initialize2Tx = await estateRegistry["initialize()"]();
+
+    await initialize2Tx.wait();
 
     const name = await estateRegistry.name();
 
