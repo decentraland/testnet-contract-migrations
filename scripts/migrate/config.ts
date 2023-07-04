@@ -6,6 +6,7 @@ import { PostDeployment } from "./postDeployments/PostDeployment";
 import { ChainId } from "./types";
 import { loadOriginContractsData } from "./utils";
 import {
+  EstateProxyPostDeployment,
   EstateRegistryPostDeployment,
   LANDProxyPostDeployment,
   LANDRegistryPostDeployment,
@@ -64,6 +65,7 @@ postDeployments.set(ContractName.MANAToken, new MANATokenPostDeployment());
 postDeployments.set(ContractName.LANDRegistry, new LANDRegistryPostDeployment());
 postDeployments.set(ContractName.LANDProxy, new LANDProxyPostDeployment());
 postDeployments.set(ContractName.EstateRegistry, new EstateRegistryPostDeployment());
+postDeployments.set(ContractName.EstateProxy, new EstateProxyPostDeployment());
 
 // Utils
 
