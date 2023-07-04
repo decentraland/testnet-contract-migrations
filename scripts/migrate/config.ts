@@ -34,8 +34,28 @@ export const deploymentOrder = [
   ContractName.MANAToken,
   ContractName.LANDRegistry,
   ContractName.LANDProxy,
+  ContractName.Marketplace,
+  ContractName.MarketplaceProxy,
   ContractName.EstateRegistry,
   ContractName.EstateProxy,
+  ContractName.ERC721Bid,
+  ContractName.ExclusiveMasksCollection,
+  ContractName.DCLRegistrar,
+  ContractName.DCLControllerV2,
+  ContractName.Catalyst,
+  ContractName.CatalystProxy,
+  ContractName.BaseList,
+  ContractName.POIAllowListProxy,
+  ContractName.NameDenyListProxy,
+  ContractName.RentalsProxyAdmin,
+  ContractName.RentalsProxy,
+  ContractName.RentalsImplementation,
+  ContractName.VestingImpl,
+  ContractName.PeriodicTokenVestingImpl,
+  ContractName.VestingFactory,
+  ContractName.BatchVesting,
+  ContractName.OwnableBatchVestingImpl,
+  ContractName.MinimalProxyFactory,
 ];
 
 export const originContractsData = loadOriginContractsData();
@@ -50,10 +70,7 @@ export const postDeployments = new Map<ContractName, PostDeployment>();
 
 // Contract Deployers
 
-contractDeployers.set(ContractName.MANAToken, pickSigner(0));
-contractDeployers.set(ContractName.LANDRegistry, pickSigner(0));
 contractDeployers.set(ContractName.LANDProxy, pickSigner(1));
-contractDeployers.set(ContractName.EstateRegistry, pickSigner(0));
 contractDeployers.set(ContractName.EstateProxy, pickSigner(1));
 
 // Constructor Factories

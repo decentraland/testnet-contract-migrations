@@ -55,11 +55,7 @@ async function main() {
 
     const contractDeployer = contractDeployers.get(contractName);
 
-    if (!contractDeployer) {
-      throw new Error("Contract deployer not found");
-    }
-
-    const factory = new ethers.ContractFactory(sourceCode.ABI, creationCode, contractDeployer(signers));
+    const factory = new ethers.ContractFactory(sourceCode.ABI, creationCode, contractDeployer?.(signers) ?? signers[0]);
 
     console.log("Deploying", ContractName[contractName]);
 
