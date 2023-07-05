@@ -4,7 +4,7 @@ dotenv.config();
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
 import fs from "fs";
-import { getRpcUrl, verifyContract } from "./utils";
+import { getRpcUrl } from "./utils";
 import { ContractName } from "../common/types";
 import {
   constructorFactories,
@@ -85,14 +85,6 @@ async function main() {
       console.log("Running post deployment...");
 
       await postDeployment.exec(signers);
-    }
-
-    if (targetChainId !== ChainId.GANACHE) {
-      console.log("Verifying contract...");
-
-      const constructorArgsHex = constructorFactory ? await constructorFactory.getConstructorArgsHex(signers) : "";
-
-      await verifyContract(contractAddress, sourceCode, constructorArgsHex);
     }
 
     console.log("Storing result...");
