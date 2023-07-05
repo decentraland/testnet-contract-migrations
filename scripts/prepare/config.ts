@@ -14,10 +14,13 @@ originContractAddresses.set(ContractName.ExclusiveMasksCollection, "0xc04528c14c
 originContractAddresses.set(ContractName.DCLRegistrar, "0x2a187453064356c898cae034eaed119e1663acb8");
 originContractAddresses.set(ContractName.DCLControllerV2, "0xbe92b49aee993adea3a002adcda189a2b7dec56c");
 originContractAddresses.set(ContractName.Catalyst, "0xcc054fab08127c19f621ab83ade5962cd10584ec");
-originContractAddresses.set(ContractName.CatalystProxy, "0x4a2f10076101650f40342885b99b6b101d83c486");
+// originContractAddresses.set(ContractName.CatalystProxy, "0x4a2f10076101650f40342885b99b6b101d83c486");
+originContractAddresses.set(ContractName.CatalystProxy, "0x959e104e1a4db6317fa58f8295f586e1a978c297");
 originContractAddresses.set(ContractName.BaseList, "0x21b6EFf834d7cc8c12A5Ec924939aa521F0FE83F");
-originContractAddresses.set(ContractName.POIAllowListProxy, "0x0ef15a1c7a49429a36cb46d4da8c53119242b54e");
-originContractAddresses.set(ContractName.NameDenyListProxy, "0x0c4c90a4f29872a2e9ef4c4be3d419792bca9a36");
+// originContractAddresses.set(ContractName.POIAllowListProxy, "0x0ef15a1c7a49429a36cb46d4da8c53119242b54e");
+originContractAddresses.set(ContractName.POIAllowListProxy, "0x959e104e1a4db6317fa58f8295f586e1a978c297");
+// originContractAddresses.set(ContractName.NameDenyListProxy, "0x0c4c90a4f29872a2e9ef4c4be3d419792bca9a36");
+originContractAddresses.set(ContractName.NameDenyListProxy, "0x959e104e1a4db6317fa58f8295f586e1a978c297");
 originContractAddresses.set(ContractName.RentalsProxyAdmin, "0xb49882c17281d3451972ae7e476cb3e0698af712");
 originContractAddresses.set(ContractName.RentalsProxy, "0x3a1469499d0be105d4f77045ca403a5f6dc2f3f5");
 originContractAddresses.set(ContractName.RentalsImplementation, "0xe90636e24d8faf02aa0e01c26d72dab9629865cb");

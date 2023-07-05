@@ -5,6 +5,7 @@ import { ConstructorFactory } from "./constructors/ConstructorFactory";
 import { PostDeployment } from "./postDeployments/PostDeployment";
 import { ChainId, OriginContractData, SourceCodeData } from "./types";
 import {
+  CatalystProxyPostDeployment,
   ERC721BidPostDeployment,
   EstateProxyPostDeployment,
   EstateRegistryPostDeployment,
@@ -17,6 +18,7 @@ import {
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
 import {
+  CatalystProxyConstructorFactory,
   DCLControllerV2ConstructorFactory,
   DCLRegistrarConstructorFactory,
   ERC721BidConstructorFactory,
@@ -42,19 +44,19 @@ export const targetChainId: ChainId = (() => {
 })();
 
 export const deploymentOrder: ContractName[] = [
-  ContractName.MANAToken,
-  ContractName.LANDRegistry,
-  ContractName.LANDProxy,
-  ContractName.Marketplace,
-  ContractName.MarketplaceProxy,
-  ContractName.EstateRegistry,
-  ContractName.EstateProxy,
-  ContractName.ERC721Bid,
-  ContractName.ExclusiveMasksCollection,
-  ContractName.DCLRegistrar,
-  ContractName.DCLControllerV2,
-  // ContractName.Catalyst,
-  // ContractName.CatalystProxy,
+  // ContractName.MANAToken,
+  // ContractName.LANDRegistry,
+  // ContractName.LANDProxy,
+  // ContractName.Marketplace,
+  // ContractName.MarketplaceProxy,
+  // ContractName.EstateRegistry,
+  // ContractName.EstateProxy,
+  // ContractName.ERC721Bid,
+  // ContractName.ExclusiveMasksCollection,
+  // ContractName.DCLRegistrar,
+  // ContractName.DCLControllerV2,
+  ContractName.Catalyst,
+  ContractName.CatalystProxy,
   // ContractName.BaseList,
   // ContractName.POIAllowListProxy,
   // ContractName.NameDenyListProxy,
@@ -84,6 +86,7 @@ export const postDeployments = new Map<ContractName, PostDeployment>();
 contractDeployers.set(ContractName.LANDProxy, pickSigner(1));
 contractDeployers.set(ContractName.MarketplaceProxy, pickSigner(1));
 contractDeployers.set(ContractName.EstateProxy, pickSigner(1));
+contractDeployers.set(ContractName.CatalystProxy, pickSigner(1));
 
 // Constructor Factories
 
@@ -93,6 +96,7 @@ constructorFactories.set(ContractName.ERC721Bid, new ERC721BidConstructorFactory
 constructorFactories.set(ContractName.ExclusiveMasksCollection, new ExclusiveMasksCollectionConstructorFactory());
 constructorFactories.set(ContractName.DCLRegistrar, new DCLRegistrarConstructorFactory());
 constructorFactories.set(ContractName.DCLControllerV2, new DCLControllerV2ConstructorFactory());
+constructorFactories.set(ContractName.CatalystProxy, new CatalystProxyConstructorFactory());
 
 // Post Deployments
 
@@ -105,6 +109,7 @@ postDeployments.set(ContractName.EstateRegistry, new EstateRegistryPostDeploymen
 postDeployments.set(ContractName.EstateProxy, new EstateProxyPostDeployment());
 postDeployments.set(ContractName.ERC721Bid, new ERC721BidPostDeployment());
 postDeployments.set(ContractName.ExclusiveMasksCollection, new ExclusiveMasksCollectionPostDeployment());
+postDeployments.set(ContractName.CatalystProxy, new CatalystProxyPostDeployment());
 
 // Misc
 
