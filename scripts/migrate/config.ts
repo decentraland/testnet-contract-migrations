@@ -85,7 +85,9 @@ loadOriginContractsData();
 
 export const deployedContractAddresses = new Map<ContractName, string>();
 
-loadDeployedContractAddresses();
+export const deployedContractConstructorHexes = new Map<ContractName, string>();
+
+loadDeployedContractData();
 
 export const contractDeployers = new Map<ContractName, (signers: ethers.Signer[]) => ethers.Signer>();
 
@@ -159,7 +161,7 @@ function pickSigner(index: number) {
   return (signers: ethers.Signer[]) => signers[index];
 }
 
-function loadDeployedContractAddresses() {
+function loadDeployedContractData() {
   const file = `${migrationsDir}/${targetChainId}.json`;
 
   if (!fs.existsSync(file)) {
@@ -168,9 +170,13 @@ function loadDeployedContractAddresses() {
 
   const migratedContent = fs.readFileSync(file, `utf-8`);
 
-  const migrated = JSON.parse(migratedContent);
+  const { addresses, constructors } = JSON.parse(migratedContent);
 
-  for (const key in migrated) {
-    deployedContractAddresses.set(ContractName[key as keyof typeof ContractName], migrated[key]);
+  for (const key in addresses) {
+    deployedContractAddresses.set(ContractName[key as keyof typeof ContractName], addresses[key]);
+
+    if (constructors[key]) {
+      deployedContractConstructorHexes.set(ContractName[key as keyof typeof ContractName], constructors[key]);
+    }
   }
 }

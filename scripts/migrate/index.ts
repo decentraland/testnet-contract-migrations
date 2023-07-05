@@ -10,6 +10,7 @@ import {
   constructorFactories,
   contractDeployers,
   deployedContractAddresses,
+  deployedContractConstructorHexes,
   deploymentOrder,
   originContractsData,
   postDeployments,
@@ -75,8 +76,10 @@ async function main() {
 
       const constructorArgs = constructorFactory ? await constructorFactory.getConstructorArgs(signers) : [];
 
-      if (constructorArgs.length) {
+      if (constructorFactory) {
         console.log("With constructor arguments: ", constructorArgs);
+
+        deployedContractConstructorHexes.set(contractName, await constructorFactory.getConstructorArgsHex(signers));
       }
 
       const contract = await factory.deploy(...constructorArgs);
@@ -114,7 +117,12 @@ async function main() {
     {}
   );
 
-  fs.writeFileSync(`${migrationsDir}/${targetChainId}.json`, JSON.stringify(addresses, null, 2));
+  const constructors = Array.from(deployedContractConstructorHexes.entries()).reduce(
+    (acc, next) => ({ ...acc, [ContractName[next[0]]]: next[1] }),
+    {}
+  );
+
+  fs.writeFileSync(`${migrationsDir}/${targetChainId}.json`, JSON.stringify({ addresses, constructors }, null, 2));
 
   console.log("Closing local blockchain...");
 
