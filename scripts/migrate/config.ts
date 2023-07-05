@@ -42,15 +42,17 @@ export const targetChainId: ChainId = (() => {
 })();
 
 export const deploymentOrder: ContractName[] = [
-  // ContractName.MANAToken,
-  // ContractName.LANDRegistry,
-  // ContractName.LANDProxy,
-  // ContractName.Marketplace,
-  // ContractName.MarketplaceProxy,
-  // ContractName.EstateRegistry,
-  // ContractName.EstateProxy,
-  // ContractName.ERC721Bid,
-  // ContractName.ExclusiveMasksCollection,
+  ContractName.MANAToken,
+  ContractName.LANDRegistry,
+  ContractName.LANDProxy,
+  ContractName.Marketplace,
+  ContractName.MarketplaceProxy,
+  ContractName.EstateRegistry,
+  ContractName.EstateProxy,
+  ContractName.ERC721Bid,
+  ContractName.ExclusiveMasksCollection,
+  ContractName.DCLRegistrar,
+  ContractName.DCLControllerV2,
   // ContractName.Catalyst,
   // ContractName.CatalystProxy,
   // ContractName.BaseList,
@@ -66,13 +68,6 @@ export const deploymentOrder: ContractName[] = [
   // ContractName.OwnableBatchVestingImpl,
   // ContractName.MinimalProxyFactory,
 ];
-
-if (targetChainId !== ChainId.GANACHE) {
-  // DCL ENS contracts depend on ens contracts that are not deployed on a local network.
-  // TODO: Find a way not to skip these deployments on ganache.
-  deploymentOrder.push(ContractName.DCLRegistrar);
-  deploymentOrder.push(ContractName.DCLControllerV2);
-}
 
 export const originContractsData = loadOriginContractsData();
 

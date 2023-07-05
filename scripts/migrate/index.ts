@@ -23,6 +23,9 @@ async function main() {
     logging: {
       quiet: true,
     },
+    fork: {
+      url: getRpcUrl(ChainId.SEPOLIA),
+    },
   });
 
   const ganacheProvider = await new Promise<EthereumProvider>((resolve, reject) => {
