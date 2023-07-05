@@ -17,6 +17,7 @@ import {
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
 import {
+  DCLControllerV2ConstructorFactory,
   DCLRegistrarConstructorFactory,
   ERC721BidConstructorFactory,
   EstateProxyConstructorFactory,
@@ -40,33 +41,38 @@ export const targetChainId: ChainId = (() => {
   return num;
 })();
 
-export const deploymentOrder = [
-  ContractName.MANAToken,
-  ContractName.LANDRegistry,
-  ContractName.LANDProxy,
-  ContractName.Marketplace,
-  ContractName.MarketplaceProxy,
-  ContractName.EstateRegistry,
-  ContractName.EstateProxy,
-  ContractName.ERC721Bid,
-  ContractName.ExclusiveMasksCollection,
-  ContractName.DCLRegistrar,
-  ContractName.DCLControllerV2,
-  ContractName.Catalyst,
-  ContractName.CatalystProxy,
-  ContractName.BaseList,
-  ContractName.POIAllowListProxy,
-  ContractName.NameDenyListProxy,
-  ContractName.RentalsProxyAdmin,
-  ContractName.RentalsProxy,
-  ContractName.RentalsImplementation,
-  ContractName.VestingImpl,
-  ContractName.PeriodicTokenVestingImpl,
-  ContractName.VestingFactory,
-  ContractName.BatchVesting,
-  ContractName.OwnableBatchVestingImpl,
-  ContractName.MinimalProxyFactory,
+export const deploymentOrder: ContractName[] = [
+  // ContractName.MANAToken,
+  // ContractName.LANDRegistry,
+  // ContractName.LANDProxy,
+  // ContractName.Marketplace,
+  // ContractName.MarketplaceProxy,
+  // ContractName.EstateRegistry,
+  // ContractName.EstateProxy,
+  // ContractName.ERC721Bid,
+  // ContractName.ExclusiveMasksCollection,
+  // ContractName.Catalyst,
+  // ContractName.CatalystProxy,
+  // ContractName.BaseList,
+  // ContractName.POIAllowListProxy,
+  // ContractName.NameDenyListProxy,
+  // ContractName.RentalsProxyAdmin,
+  // ContractName.RentalsProxy,
+  // ContractName.RentalsImplementation,
+  // ContractName.VestingImpl,
+  // ContractName.PeriodicTokenVestingImpl,
+  // ContractName.VestingFactory,
+  // ContractName.BatchVesting,
+  // ContractName.OwnableBatchVestingImpl,
+  // ContractName.MinimalProxyFactory,
 ];
+
+if (targetChainId !== ChainId.GANACHE) {
+  // DCL ENS contracts depend on ens contracts that are not deployed on a local network.
+  // TODO: Find a way not to skip these deployments on ganache.
+  deploymentOrder.push(ContractName.DCLRegistrar);
+  deploymentOrder.push(ContractName.DCLControllerV2);
+}
 
 export const originContractsData = loadOriginContractsData();
 
@@ -88,9 +94,10 @@ contractDeployers.set(ContractName.EstateProxy, pickSigner(1));
 
 constructorFactories.set(ContractName.EstateProxy, new EstateProxyConstructorFactory());
 constructorFactories.set(ContractName.MarketplaceProxy, new MarketplaceProxyConstructorFactory());
-constructorFactories.set(ContractName.ERC721Bid, new ERC721BidProxyConstructorFactory());
+constructorFactories.set(ContractName.ERC721Bid, new ERC721BidConstructorFactory());
 constructorFactories.set(ContractName.ExclusiveMasksCollection, new ExclusiveMasksCollectionConstructorFactory());
 constructorFactories.set(ContractName.DCLRegistrar, new DCLRegistrarConstructorFactory());
+constructorFactories.set(ContractName.DCLControllerV2, new DCLControllerV2ConstructorFactory());
 
 // Post Deployments
 

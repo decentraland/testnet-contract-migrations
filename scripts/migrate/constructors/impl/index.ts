@@ -3,3 +3,4 @@ export { MarketplaceProxyConstructorFactory } from "./MarketplaceProxyConstructo
 export { ERC721BidConstructorFactory } from "./ERC721BidConstructorFactory";
 export { ExclusiveMasksCollectionConstructorFactory } from "./ExclusiveMasksCollectionConstructorFactory";
 export { DCLRegistrarConstructorFactory } from "./DCLRegistrarConstructorFactory";
+export { DCLControllerV2ConstructorFactory } from "./DCLControllerV2ConstructorFactory";
