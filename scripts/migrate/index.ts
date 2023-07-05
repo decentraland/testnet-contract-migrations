@@ -4,7 +4,7 @@ dotenv.config();
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
 import fs from "fs";
-import { getRpcUrl } from "./utils";
+import { getOriginContractData, getRpcUrl } from "./utils";
 import { ContractName } from "../common/types";
 import {
   constructorFactories,
@@ -56,11 +56,7 @@ async function main() {
         continue;
       }
 
-      const originContractData = originContractsData.get(contractName);
-
-      if (!originContractData) {
-        throw new Error("Origin contract data not found");
-      }
+      const originContractData = getOriginContractData(contractName);
 
       const { sourceCode, creationCode } = originContractData;
 

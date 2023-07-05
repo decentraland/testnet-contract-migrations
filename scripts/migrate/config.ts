@@ -35,6 +35,7 @@ import {
 } from "./constructors/impl";
 import { migrationsDir } from "./paths";
 
+// The chain into which contracts will be migrated to.
 export const targetChainId: ChainId = (() => {
   const env = process.env.TARGET_CHAIN_ID;
 
@@ -51,6 +52,7 @@ export const targetChainId: ChainId = (() => {
   return num;
 })();
 
+// The order in which contracts will be deployed.
 export const deploymentOrder: ContractName[] = [
   ContractName.MANAToken,
   ContractName.LANDRegistry,
@@ -79,31 +81,44 @@ export const deploymentOrder: ContractName[] = [
   ContractName.MinimalProxyFactory,
 ];
 
+// Origin data of each contract.
+// Contains information about ABIs, source codes and other important information from the original contracts.
 export const originContractsData = new Map<ContractName, OriginContractData>();
 
-loadOriginContractsData();
-
+// The addresses of contracts that have been deployed to the target chain.
 export const deployedContractAddresses = new Map<ContractName, string>();
 
+// The constructor arguments in hex format used to deploy the contracts to the target chain.
+// Required for verifying the contracts on Etherscan.
 export const deployedContractConstructorHexes = new Map<ContractName, string>();
 
-loadDeployedContractData();
+// Determines which signer will be used to deploy each contract.
+// If not defined, the first signer will be used.
+export const contractDeployerPickers = new Map<ContractName, (signers: ethers.Signer[]) => ethers.Signer>();
 
-export const contractDeployers = new Map<ContractName, (signers: ethers.Signer[]) => ethers.Signer>();
-
+// Builds the constructor arguments for each contract.
 export const constructorFactories = new Map<ContractName, ConstructorFactory>();
 
+// Executes post deployment steps for each contract.
+// This steps might contain initializations for proxy contracts as well as checks to determine the deployment
+// has been executed correctly.
 export const postDeployments = new Map<ContractName, PostDeployment>();
+
+// Loads the data that has been downloaded through the `prepare` script.
+loadOriginContractsData();
+
+// Loads the data of contracts that have already been deployed to the target chain.
+loadDeployedContractData();
 
 // Contract Deployers
 
-contractDeployers.set(ContractName.LANDProxy, pickSigner(1));
-contractDeployers.set(ContractName.MarketplaceProxy, pickSigner(1));
-contractDeployers.set(ContractName.EstateProxy, pickSigner(1));
-contractDeployers.set(ContractName.CatalystProxy, pickSigner(1));
-contractDeployers.set(ContractName.POIAllowListProxy, pickSigner(1));
-contractDeployers.set(ContractName.NameDenyListProxy, pickSigner(1));
-contractDeployers.set(ContractName.RentalsProxyAdmin, pickSigner(1));
+contractDeployerPickers.set(ContractName.LANDProxy, pickSigner(1));
+contractDeployerPickers.set(ContractName.MarketplaceProxy, pickSigner(1));
+contractDeployerPickers.set(ContractName.EstateProxy, pickSigner(1));
+contractDeployerPickers.set(ContractName.CatalystProxy, pickSigner(1));
+contractDeployerPickers.set(ContractName.POIAllowListProxy, pickSigner(1));
+contractDeployerPickers.set(ContractName.NameDenyListProxy, pickSigner(1));
+contractDeployerPickers.set(ContractName.RentalsProxyAdmin, pickSigner(1));
 
 // Constructor Factories
 

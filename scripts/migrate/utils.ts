@@ -1,6 +1,6 @@
 import { ContractName } from "../common/types";
 import { deployedContractAddresses, originContractsData } from "./config";
-import { ChainId, SourceCodeData } from "./types";
+import { ChainId, OriginContractData, SourceCodeData } from "./types";
 
 export const GANACHE_RPC_URL = "http://localhost:8545";
 export const SEPOLIA_RPC_URL = `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`;
@@ -30,4 +30,10 @@ export function getSourceCodeData(contract: ContractName): SourceCodeData {
 
 export function getAbi(contract: ContractName): string {
   return getSourceCodeData(contract).ABI;
+}
+
+export function getOriginContractData(contract: ContractName): OriginContractData {
+  const originContractData = originContractsData.get(contract);
+  if (!originContractData) throw new Error(`Origin contract data not found for ${ContractName[contract]}`);
+  return originContractData;
 }
