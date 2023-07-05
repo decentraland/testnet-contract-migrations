@@ -52,12 +52,12 @@ export async function verifyContract(
 
 export function getAddress(contract: ContractName): string {
   const address = deployedContractAddresses.get(contract);
-  if (!address) throw new Error(`Address not found for ${contract}`);
+  if (!address) throw new Error(`Address not found for ${ContractName[contract]}`);
   return address;
 }
 
 export function getAbi(contract: ContractName): string {
   const abi = originContractsData.get(contract)?.sourceCode.ABI;
-  if (!abi) throw new Error(`ABI not found for ${contract}`);
+  if (!abi) throw new Error(`ABI not found for ${ContractName[contract]}`);
   return abi;
 }

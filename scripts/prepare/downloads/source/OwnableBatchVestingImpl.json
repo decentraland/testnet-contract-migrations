@@ -1,0 +1,15 @@
+{
+  "SourceCode": "{{\r\n  \"language\": \"Solidity\",\r\n  \"sources\": {\r\n    \"contracts/OwnableBatchVestings.sol\": {\r\n      \"content\": \"// SPDX-License-Identifier: MIT\\n\\npragma solidity 0.8.0;\\n\\ninterface IVestingFactory {\\n    function createVesting(\\n        address _implementation,\\n        bytes32 _salt,\\n        bytes calldata _data\\n    ) external returns (address addr);\\n}\\n\\ncontract OwnableBatchVestings {\\n    address public owner;\\n\\n    function initialize(address _owner) external {\\n        require(\\n            owner == address(0) && _owner != address(0),\\n            \\\"OwnableBatchVestings#initialize: INITIALIZATION_FAILED\\\"\\n        );\\n\\n        owner = _owner;\\n    }\\n\\n    function createVestings(\\n        IVestingFactory _factory,\\n        address _implementation,\\n        bytes32 _salt,\\n        bytes[] calldata _datas\\n    ) external {\\n        require(\\n            msg.sender == owner,\\n            \\\"OwnableBatchVestings#createVestings: NOT_OWNER\\\"\\n        );\\n\\n        for (uint256 i = 0; i < _datas.length; i++) {\\n            _factory.createVesting(\\n                _implementation,\\n                keccak256(abi.encode(_salt, i)),\\n                _datas[i]\\n            );\\n        }\\n    }\\n}\\n\"\r\n    }\r\n  },\r\n  \"settings\": {\r\n    \"optimizer\": {\r\n      \"enabled\": true,\r\n      \"runs\": 200\r\n    },\r\n    \"outputSelection\": {\r\n      \"*\": {\r\n        \"*\": [\r\n          \"evm.bytecode\",\r\n          \"evm.deployedBytecode\",\r\n          \"devdoc\",\r\n          \"userdoc\",\r\n          \"metadata\",\r\n          \"abi\"\r\n        ]\r\n      }\r\n    },\r\n    \"libraries\": {}\r\n  }\r\n}}",
+  "ABI": "[{\"inputs\":[{\"internalType\":\"contract IVestingFactory\",\"name\":\"_factory\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_implementation\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"_salt\",\"type\":\"bytes32\"},{\"internalType\":\"bytes[]\",\"name\":\"_datas\",\"type\":\"bytes[]\"}],\"name\":\"createVestings\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+  "ContractName": "OwnableBatchVestings",
+  "CompilerVersion": "v0.8.0+commit.c7dfd78e",
+  "OptimizationUsed": "1",
+  "Runs": "200",
+  "ConstructorArguments": "",
+  "EVMVersion": "Default",
+  "Library": "",
+  "LicenseType": "",
+  "Proxy": "0",
+  "Implementation": "",
+  "SwarmSource": ""
+}

@@ -1,0 +1,15 @@
+{
+  "SourceCode": "{{\r\n  \"language\": \"Solidity\",\r\n  \"sources\": {\r\n    \"contracts/MinimalProxyFactory.sol\": {\r\n      \"content\": \"// SPDX-License-Identifier: MIT\\n\\npragma solidity 0.8.2;\\n\\ncontract MinimalProxyFactory {\\n    event ProxyCreated(address indexed _proxy);\\n\\n    function createProxy(\\n        address _implementation,\\n        bytes32 _salt,\\n        bytes memory _data\\n    ) public virtual returns (address addr) {\\n        bytes32 salt = keccak256(abi.encodePacked(_salt, msg.sender));\\n\\n        // solium-disable-next-line security/no-inline-assembly\\n        bytes memory slotcode = abi.encodePacked(\\n            hex\\\"3d602d80600a3d3981f3363d3d373d3d3d363d73\\\",\\n            _implementation,\\n            hex\\\"5af43d82803e903d91602b57fd5bf3\\\"\\n        );\\n\\n        assembly {\\n            addr := create2(0, add(slotcode, 0x20), mload(slotcode), salt)\\n        }\\n\\n        require(\\n            addr != address(0),\\n            \\\"MinimalProxyFactory#createProxy: CREATION_FAILED\\\"\\n        );\\n\\n        if (_data.length > 0) {\\n            (bool success, ) = addr.call(_data);\\n            require(success, \\\"MinimalProxyFactory#createProxy: CALL_FAILED\\\");\\n        }\\n\\n        emit ProxyCreated(addr);\\n    }\\n}\\n\"\r\n    }\r\n  },\r\n  \"settings\": {\r\n    \"optimizer\": {\r\n      \"enabled\": true,\r\n      \"runs\": 200\r\n    },\r\n    \"outputSelection\": {\r\n      \"*\": {\r\n        \"*\": [\r\n          \"evm.bytecode\",\r\n          \"evm.deployedBytecode\",\r\n          \"devdoc\",\r\n          \"userdoc\",\r\n          \"metadata\",\r\n          \"abi\"\r\n        ]\r\n      }\r\n    },\r\n    \"libraries\": {}\r\n  }\r\n}}",
+  "ABI": "[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"_proxy\",\"type\":\"address\"}],\"name\":\"ProxyCreated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_implementation\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"_salt\",\"type\":\"bytes32\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"createProxy\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+  "ContractName": "MinimalProxyFactory",
+  "CompilerVersion": "v0.8.2+commit.661d1103",
+  "OptimizationUsed": "1",
+  "Runs": "200",
+  "ConstructorArguments": "",
+  "EVMVersion": "Default",
+  "Library": "",
+  "LicenseType": "",
+  "Proxy": "0",
+  "Implementation": "",
+  "SwarmSource": ""
+}

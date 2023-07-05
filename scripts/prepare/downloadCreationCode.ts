@@ -22,8 +22,6 @@ export async function downloadCreationCode() {
       throw new Error("Creation code not found");
     }
 
-    fs.mkdirSync(creationCodesDir, { recursive: true });
-
     fs.writeFileSync(`${creationCodesDir}/${ContractName[name]}.json`, JSON.stringify([creationCode], null, 2));
   }
 }
