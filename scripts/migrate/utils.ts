@@ -1,3 +1,5 @@
+import { ContractName } from "../common/types";
+import { deployedContractAddresses, originContractsData } from "./config";
 import { ChainId, SourceCodeData } from "./types";
 
 export const GANACHE_RPC_URL = "http://localhost:8545";
@@ -46,4 +48,16 @@ export async function verifyContract(
       `Failed to verify contract. status: ${json.status}, message: ${json.message}, result: ${json.result}`
     );
   }
+}
+
+export function getAddress(contract: ContractName): string {
+  const address = deployedContractAddresses.get(contract);
+  if (!address) throw new Error(`Address not found for ${contract}`);
+  return address;
+}
+
+export function getAbi(contract: ContractName): string {
+  const abi = originContractsData.get(contract)?.sourceCode.ABI;
+  if (!abi) throw new Error(`ABI not found for ${contract}`);
+  return abi;
 }

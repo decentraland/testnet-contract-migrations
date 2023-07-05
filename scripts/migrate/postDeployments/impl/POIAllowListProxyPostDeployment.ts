@@ -1,12 +1,13 @@
 import { ethers } from "ethers";
 import { ContractName } from "../../../common/types";
+import { getAbi, getAddress } from "../../utils";
 import { PostDeployment } from "../PostDeployment";
 
 export class POIAllowListProxyPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const address = this.getAddress(ContractName.POIAllowListProxy);
+    const address = getAddress(ContractName.POIAllowListProxy);
 
-    const abi = this.getAbi(ContractName.BaseList);
+    const abi = getAbi(ContractName.BaseList);
 
     const contract = new ethers.Contract(address, abi, signers[0]);
 

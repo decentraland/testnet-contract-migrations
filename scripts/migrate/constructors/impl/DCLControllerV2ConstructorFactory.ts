@@ -1,6 +1,7 @@
 import { ContractMethodArgs, ethers } from "ethers";
-import { ConstructorFactory } from "../ConstructorFactory";
 import { ContractName } from "../../../common/types";
+import { getAddress } from "../../utils";
+import { ConstructorFactory } from "../ConstructorFactory";
 
 export class DCLControllerV2ConstructorFactory extends ConstructorFactory {
   name: ContractName = ContractName.DCLControllerV2;
@@ -8,6 +9,6 @@ export class DCLControllerV2ConstructorFactory extends ConstructorFactory {
   async getConstructorArgs(signers: ethers.Signer[]): Promise<ContractMethodArgs<any[]>> {
     const owner = await signers[0].getAddress();
 
-    return [this.getAddress(ContractName.MANAToken), this.getAddress(ContractName.DCLRegistrar), owner, owner];
+    return [getAddress(ContractName.MANAToken), getAddress(ContractName.DCLRegistrar), owner, owner];
   }
 }

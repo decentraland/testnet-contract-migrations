@@ -1,11 +1,12 @@
 import { ContractMethodArgs } from "ethers";
-import { ConstructorFactory } from "../ConstructorFactory";
 import { ContractName } from "../../../common/types";
+import { getAddress } from "../../utils";
+import { ConstructorFactory } from "../ConstructorFactory";
 
 export class NameDenyListProxyConstructorFactory extends ConstructorFactory {
   name: ContractName = ContractName.NameDenyListProxy;
 
   async getConstructorArgs(): Promise<ContractMethodArgs<any[]>> {
-    return [this.getAddress(ContractName.BaseList)];
+    return [getAddress(ContractName.BaseList)];
   }
 }

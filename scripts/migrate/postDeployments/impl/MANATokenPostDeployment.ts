@@ -1,13 +1,14 @@
 import { ethers } from "ethers";
 import { expect } from "chai";
 import { ContractName } from "../../../common/types";
+import { getAbi, getAddress } from "../../utils";
 import { PostDeployment } from "../PostDeployment";
 
 export class MANATokenPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const manaTokenAddress = this.getAddress(ContractName.MANAToken);
+    const manaTokenAddress = getAddress(ContractName.MANAToken);
 
-    const manaTokenAbi = this.getAbi(ContractName.MANAToken);
+    const manaTokenAbi = getAbi(ContractName.MANAToken);
 
     const minter = signers[0];
 

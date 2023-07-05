@@ -1,13 +1,14 @@
 import { ethers } from "ethers";
 import { expect } from "chai";
 import { ContractName } from "../../../common/types";
+import { getAbi, getAddress } from "../../utils";
 import { PostDeployment } from "../PostDeployment";
 
 export class MarketplacePostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const marketplaceAddress = this.getAddress(ContractName.Marketplace);
+    const marketplaceAddress = getAddress(ContractName.Marketplace);
 
-    const marketplaceAbi = this.getAbi(ContractName.Marketplace);
+    const marketplaceAbi = getAbi(ContractName.Marketplace);
 
     const initializer = signers[0];
 
@@ -19,9 +20,9 @@ export class MarketplacePostDeployment extends PostDeployment {
 
     await initialize1Tx.wait();
 
-    const manaTokenAddress = this.getAddress(ContractName.MANAToken);
+    const manaTokenAddress = getAddress(ContractName.MANAToken);
 
-    const landProxyAddress = this.getAddress(ContractName.LANDProxy);
+    const landProxyAddress = getAddress(ContractName.LANDProxy);
 
     const initialize2Tx = await marketplace["initialize(address,address,address)"](
       manaTokenAddress,

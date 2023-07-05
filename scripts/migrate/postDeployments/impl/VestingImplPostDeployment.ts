@@ -1,19 +1,20 @@
 import { ethers } from "ethers";
 import { expect } from "chai";
 import { ContractName } from "../../../common/types";
+import { getAbi, getAddress } from "../../utils";
 import { PostDeployment } from "../PostDeployment";
 
 export class VestingImplPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const address = this.getAddress(ContractName.VestingImpl);
+    const address = getAddress(ContractName.VestingImpl);
 
-    const abi = this.getAbi(ContractName.VestingImpl);
+    const abi = getAbi(ContractName.VestingImpl);
 
     const contract = new ethers.Contract(address, abi, signers[0]);
 
     const owner = await signers[0].getAddress();
 
-    const manaAddress = this.getAddress(ContractName.MANAToken);
+    const manaAddress = getAddress(ContractName.MANAToken);
 
     const initializeTx = await contract.initialize(owner, owner, "1", "1", "1", false, manaAddress);
 

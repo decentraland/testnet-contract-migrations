@@ -1,13 +1,14 @@
 import { ethers } from "ethers";
 import { expect } from "chai";
 import { ContractName } from "../../../common/types";
+import { getAbi, getAddress } from "../../utils";
 import { PostDeployment } from "../PostDeployment";
 
 export class LANDRegistryPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const landRegistryAddress = this.getAddress(ContractName.LANDRegistry);
+    const landRegistryAddress = getAddress(ContractName.LANDRegistry);
 
-    const landRegistryAbi = this.getAbi(ContractName.LANDRegistry);
+    const landRegistryAbi = getAbi(ContractName.LANDRegistry);
 
     const initializer = signers[0];
 

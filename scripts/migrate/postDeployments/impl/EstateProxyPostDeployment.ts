@@ -1,21 +1,22 @@
 import { ethers } from "ethers";
 import { expect } from "chai";
 import { ContractName } from "../../../common/types";
+import { getAbi, getAddress } from "../../utils";
 import { PostDeployment } from "../PostDeployment";
 
 export class EstateProxyPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
     // Initialize
 
-    const estateProxyAddress = this.getAddress(ContractName.EstateProxy);
+    const estateProxyAddress = getAddress(ContractName.EstateProxy);
 
-    const estateRegistryAbi = this.getAbi(ContractName.EstateRegistry);
+    const estateRegistryAbi = getAbi(ContractName.EstateRegistry);
 
     const initializer = signers[0];
 
     const estateRegistry = new ethers.Contract(estateProxyAddress, estateRegistryAbi, initializer);
 
-    const landProxyAddress = this.getAddress(ContractName.LANDProxy);
+    const landProxyAddress = getAddress(ContractName.LANDProxy);
 
     const initialize1Tx = await estateRegistry["initialize(string,string,address)"](
       "Estate Impl",
@@ -49,7 +50,7 @@ export class EstateProxyPostDeployment extends PostDeployment {
 
     const proxyOwner = signers[1];
 
-    const landRegistryAbi = this.getAbi(ContractName.LANDRegistry);
+    const landRegistryAbi = getAbi(ContractName.LANDRegistry);
 
     const landRegistry = new ethers.Contract(landProxyAddress, landRegistryAbi, proxyOwner);
 

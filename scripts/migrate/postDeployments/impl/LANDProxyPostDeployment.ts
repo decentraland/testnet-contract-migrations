@@ -1,33 +1,34 @@
 import { ethers } from "ethers";
 import { expect } from "chai";
 import { ContractName } from "../../../common/types";
+import { getAbi, getAddress } from "../../utils";
 import { PostDeployment } from "../PostDeployment";
 
 export class LANDProxyPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const landProxyAddress = this.getAddress(ContractName.LANDProxy);
+    const landProxyAddress = getAddress(ContractName.LANDProxy);
 
-    const landProxyAbi = this.getAbi(ContractName.LANDProxy);
+    const landProxyAbi = getAbi(ContractName.LANDProxy);
 
     const upgrader = signers[1];
 
     const landProxy = new ethers.Contract(landProxyAddress, landProxyAbi, upgrader);
 
-    const landRegistryAddress = this.getAddress(ContractName.LANDRegistry);
+    const landRegistryAddress = getAddress(ContractName.LANDRegistry);
 
     const upgradeTx = await landProxy.upgrade(landRegistryAddress, ethers.toUtf8Bytes("Nando"));
 
     await upgradeTx.wait();
 
-    const currentContract = await landProxy.currentContract()
+    const currentContract = await landProxy.currentContract();
 
     expect(currentContract).to.equal(landRegistryAddress);
 
-    const proxyOwner = await landProxy.proxyOwner()
+    const proxyOwner = await landProxy.proxyOwner();
 
     expect(proxyOwner).to.equal(await upgrader.getAddress());
 
-    const landRegistryAbi = this.getAbi(ContractName.LANDRegistry);
+    const landRegistryAbi = getAbi(ContractName.LANDRegistry);
 
     const otherAccount = signers[0];
 

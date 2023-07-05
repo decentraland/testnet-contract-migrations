@@ -1,13 +1,14 @@
 import { ethers } from "ethers";
 import { expect } from "chai";
 import { ContractName } from "../../../common/types";
+import { getAbi, getAddress } from "../../utils";
 import { PostDeployment } from "../PostDeployment";
 
 export class ExclusiveMasksCollectionPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const address = this.getAddress(ContractName.ExclusiveMasksCollection);
+    const address = getAddress(ContractName.ExclusiveMasksCollection);
 
-    const abi = this.getAbi(ContractName.ExclusiveMasksCollection);
+    const abi = getAbi(ContractName.ExclusiveMasksCollection);
 
     const contract = new ethers.Contract(address, abi, signers[0]);
 
