@@ -3,7 +3,6 @@ dotenv.config();
 
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
-import fs from "fs";
 import { getRpcUrl } from "./utils";
 import { ContractName } from "../common/types";
 import {
@@ -16,7 +15,6 @@ import {
   targetChainId,
 } from "./config";
 import { ChainId } from "./types";
-import { migrationsDir } from "./paths";
 
 async function main() {
   const ganacheServer = ganache.server({
@@ -88,7 +86,7 @@ async function main() {
       await postDeployment.exec(signers);
     }
 
-    console.log(`Finished ${ContractName[contractName]} deployment :D\n`);
+    console.log(`Finished ${ContractName[contractName]} deployment :D`);
   }
 
   await ganacheServer.close();
