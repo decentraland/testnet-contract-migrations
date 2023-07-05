@@ -17,6 +17,7 @@ import {
   MarketplaceProxyPostDeployment,
   NameDenyListProxyPostDeployment,
   POIAllowListProxyPostDeployment,
+  RentalsProxyPostDeployment,
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
 import {
@@ -29,6 +30,7 @@ import {
   MarketplaceProxyConstructorFactory,
   NameDenyListProxyConstructorFactory,
   POIAllowListProxyConstructorFactory,
+  RentalsProxyConstructorFactory,
 } from "./constructors/impl";
 
 export const targetChainId: ChainId = (() => {
@@ -48,7 +50,7 @@ export const targetChainId: ChainId = (() => {
 })();
 
 export const deploymentOrder: ContractName[] = [
-  // ContractName.MANAToken,
+  ContractName.MANAToken,
   // ContractName.LANDRegistry,
   // ContractName.LANDProxy,
   // ContractName.Marketplace,
@@ -61,12 +63,12 @@ export const deploymentOrder: ContractName[] = [
   // ContractName.DCLControllerV2,
   // ContractName.Catalyst,
   // ContractName.CatalystProxy,
-  ContractName.BaseList,
-  ContractName.POIAllowListProxy,
-  ContractName.NameDenyListProxy,
-  // ContractName.RentalsProxyAdmin,
-  // ContractName.RentalsProxy,
-  // ContractName.RentalsImplementation,
+  // ContractName.BaseList,
+  // ContractName.POIAllowListProxy,
+  // ContractName.NameDenyListProxy,
+  ContractName.RentalsImplementation,
+  ContractName.RentalsProxyAdmin,
+  ContractName.RentalsProxy,
   // ContractName.VestingImpl,
   // ContractName.PeriodicTokenVestingImpl,
   // ContractName.VestingFactory,
@@ -93,6 +95,7 @@ contractDeployers.set(ContractName.EstateProxy, pickSigner(1));
 contractDeployers.set(ContractName.CatalystProxy, pickSigner(1));
 contractDeployers.set(ContractName.POIAllowListProxy, pickSigner(1));
 contractDeployers.set(ContractName.NameDenyListProxy, pickSigner(1));
+contractDeployers.set(ContractName.RentalsProxyAdmin, pickSigner(1));
 
 // Constructor Factories
 
@@ -105,6 +108,7 @@ constructorFactories.set(ContractName.DCLControllerV2, new DCLControllerV2Constr
 constructorFactories.set(ContractName.CatalystProxy, new CatalystProxyConstructorFactory());
 constructorFactories.set(ContractName.POIAllowListProxy, new POIAllowListProxyConstructorFactory());
 constructorFactories.set(ContractName.NameDenyListProxy, new NameDenyListProxyConstructorFactory());
+constructorFactories.set(ContractName.RentalsProxy, new RentalsProxyConstructorFactory());
 
 // Post Deployments
 
@@ -120,6 +124,7 @@ postDeployments.set(ContractName.ExclusiveMasksCollection, new ExclusiveMasksCol
 postDeployments.set(ContractName.CatalystProxy, new CatalystProxyPostDeployment());
 postDeployments.set(ContractName.POIAllowListProxy, new POIAllowListProxyPostDeployment());
 postDeployments.set(ContractName.NameDenyListProxy, new NameDenyListProxyPostDeployment());
+postDeployments.set(ContractName.RentalsProxy, new RentalsProxyPostDeployment());
 
 // Misc
 

@@ -10,3 +10,4 @@ export { ExclusiveMasksCollectionPostDeployment } from "./ExclusiveMasksCollecti
 export { CatalystProxyPostDeployment } from "./CatalystProxyPostDeployment";
 export { POIAllowListProxyPostDeployment } from "./POIAllowListProxyPostDeployment";
 export { NameDenyListProxyPostDeployment } from "./NameDenyListProxyPostDeployment";
+export { RentalsProxyPostDeployment } from "./RentalsProxyPostDeployment";

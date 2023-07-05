@@ -7,3 +7,4 @@ export { DCLControllerV2ConstructorFactory } from "./DCLControllerV2ConstructorF
 export { CatalystProxyConstructorFactory } from "./CatalystProxyConstructorFactory";
 export { POIAllowListProxyConstructorFactory } from "./POIAllowListProxyConstructorFactory";
 export { NameDenyListProxyConstructorFactory } from "./NameDenyListProxyConstructorFactory";
+export { RentalsProxyConstructorFactory } from "./RentalsProxyConstructorFactory";

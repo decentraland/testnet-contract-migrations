@@ -20,7 +20,7 @@ export abstract class ConstructorFactory {
     return address;
   };
 
-  private getAbi = (contract: ContractName): string => {
+  protected getAbi = (contract: ContractName): string => {
     const abi = originContractsData.get(contract)?.sourceCode.ABI;
     if (!abi) throw new Error(`ABI not found for ${contract}`);
     return abi;
