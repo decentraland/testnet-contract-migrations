@@ -45,8 +45,6 @@ async function main() {
       ? await new ethers.BrowserProvider(ganacheProvider).listAccounts()
       : process.env.PRIVATE_KEYS!.split(",").map((pk) => new ethers.Wallet(pk, provider as AbstractProvider));
 
-  fs.rmSync(migrationsDir, { recursive: true, force: true });
-
   for (const contractName of deploymentOrder) {
     console.log("Deploying", ContractName[contractName]);
 
@@ -89,15 +87,6 @@ async function main() {
 
       await postDeployment.exec(signers);
     }
-
-    console.log("Storing result...");
-
-    fs.mkdirSync(migrationsDir, { recursive: true });
-
-    fs.writeFileSync(
-      `${migrationsDir}/${ContractName[contractName]}.json`,
-      JSON.stringify({ address: contractAddress }, null, 2)
-    );
 
     console.log(`Finished ${ContractName[contractName]} deployment :D\n`);
   }
