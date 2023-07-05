@@ -7,17 +7,12 @@ import { PostDeployment } from "../PostDeployment";
 export class VestingImplPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
     const address = getAddress(ContractName.VestingImpl);
-
     const abi = getAbi(ContractName.VestingImpl);
-
     const contract = new ethers.Contract(address, abi, signers[0]);
-
     const owner = await signers[0].getAddress();
-
     const manaAddress = getAddress(ContractName.MANAToken);
 
     const initializeTx = await contract.initialize(owner, owner, "1", "1", "1", false, manaAddress);
-
     await initializeTx.wait();
 
     expect(await contract.owner()).to.equal(owner);

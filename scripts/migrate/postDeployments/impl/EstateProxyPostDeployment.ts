@@ -8,58 +8,30 @@ export class EstateProxyPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
     // Initialize
 
-    const estateProxyAddress = getAddress(ContractName.EstateProxy);
+    const address = getAddress(ContractName.EstateProxy);
+    const abi = getAbi(ContractName.EstateRegistry);
+    const contract = new ethers.Contract(address, abi, signers[0]);
+    const landAddress = getAddress(ContractName.LANDProxy);
 
-    const estateRegistryAbi = getAbi(ContractName.EstateRegistry);
-
-    const initializer = signers[0];
-
-    const estateRegistry = new ethers.Contract(estateProxyAddress, estateRegistryAbi, initializer);
-
-    const landProxyAddress = getAddress(ContractName.LANDProxy);
-
-    const initialize1Tx = await estateRegistry["initialize(string,string,address)"](
-      "Estate Impl",
-      "EST",
-      landProxyAddress
-    );
-
+    const initialize1Tx = await contract["initialize(string,string,address)"]("Estate Impl", "EST", landAddress);
     await initialize1Tx.wait();
 
-    const initialize2Tx = await estateRegistry["initialize()"]();
-
+    const initialize2Tx = await contract["initialize()"]();
     await initialize2Tx.wait();
 
-    const name = await estateRegistry.name();
-
-    expect(name).to.equal("Estate Impl");
-
-    const symbol = await estateRegistry.symbol();
-
-    expect(symbol).to.equal("EST");
-
-    const description = await estateRegistry.registry();
-
-    expect(description).to.equal(landProxyAddress);
-
-    const owner = await estateRegistry.owner();
-
-    expect(owner).to.equal(await initializer.getAddress());
+    expect(await contract.name()).to.equal("Estate Impl");
+    expect(await contract.symbol()).to.equal("EST");
+    expect(await contract.registry()).to.equal(landAddress);
+    expect(await contract.owner()).to.equal(await signers[0].getAddress());
 
     // Set Estate Registry on Land Registry
 
-    const proxyOwner = signers[1];
+    const landAbi = getAbi(ContractName.LANDRegistry);
+    const landContract = new ethers.Contract(landAddress, landAbi, signers[1]);
 
-    const landRegistryAbi = getAbi(ContractName.LANDRegistry);
-
-    const landRegistry = new ethers.Contract(landProxyAddress, landRegistryAbi, proxyOwner);
-
-    const setEstateRegistryTx = await landRegistry.setEstateRegistry(estateProxyAddress);
-
+    const setEstateRegistryTx = await landContract.setEstateRegistry(address);
     await setEstateRegistryTx.wait();
-
-    const estateRegistryAddress = await landRegistry.estateRegistry();
-
-    expect(estateRegistryAddress).to.equal(estateProxyAddress);
+    
+    expect(await landContract.estateRegistry()).to.equal(address);
   }
 }

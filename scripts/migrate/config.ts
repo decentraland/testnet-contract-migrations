@@ -12,7 +12,6 @@ import {
   ExclusiveMasksCollectionPostDeployment,
   LANDProxyPostDeployment,
   LANDRegistryPostDeployment,
-  MANATokenPostDeployment,
   MarketplacePostDeployment,
   MarketplaceProxyPostDeployment,
   NameDenyListProxyPostDeployment,
@@ -114,7 +113,6 @@ constructorFactories.set(ContractName.RentalsProxy, new RentalsProxyConstructorF
 
 // Post Deployments
 
-postDeployments.set(ContractName.MANAToken, new MANATokenPostDeployment());
 postDeployments.set(ContractName.LANDRegistry, new LANDRegistryPostDeployment());
 postDeployments.set(ContractName.LANDProxy, new LANDProxyPostDeployment());
 postDeployments.set(ContractName.Marketplace, new MarketplacePostDeployment());

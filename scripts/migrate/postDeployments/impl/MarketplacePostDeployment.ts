@@ -6,42 +6,22 @@ import { PostDeployment } from "../PostDeployment";
 
 export class MarketplacePostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const marketplaceAddress = getAddress(ContractName.Marketplace);
+    const address = getAddress(ContractName.Marketplace);
+    const abi = getAbi(ContractName.Marketplace);
+    const contract = new ethers.Contract(address, abi, signers[0]);
 
-    const marketplaceAbi = getAbi(ContractName.Marketplace);
-
-    const initializer = signers[0];
-
-    const initializerAddress = await initializer.getAddress();
-
-    const marketplace = new ethers.Contract(marketplaceAddress, marketplaceAbi, initializer);
-
-    const initialize1Tx = await marketplace["initialize()"]();
-
+    const initialize1Tx = await contract["initialize()"]();
     await initialize1Tx.wait();
 
-    const manaTokenAddress = getAddress(ContractName.MANAToken);
+    const manaAddress = getAddress(ContractName.MANAToken);
+    const landAddress = getAddress(ContractName.LANDProxy);
+    const owner = await signers[0].getAddress();
 
-    const landProxyAddress = getAddress(ContractName.LANDProxy);
-
-    const initialize2Tx = await marketplace["initialize(address,address,address)"](
-      manaTokenAddress,
-      landProxyAddress,
-      initializerAddress
-    );
-
+    const initialize2Tx = await contract["initialize(address,address,address)"](manaAddress, landAddress, owner);
     await initialize2Tx.wait();
 
-    const acceptedToken = await marketplace.acceptedToken();
-
-    expect(acceptedToken).to.equal(manaTokenAddress);
-
-    const legacyNFTAddress = await marketplace.legacyNFTAddress();
-
-    expect(legacyNFTAddress).to.equal(landProxyAddress);
-
-    const owner = await marketplace.owner();
-
-    expect(owner).to.equal(initializerAddress);
+    expect(await contract.acceptedToken()).to.equal(manaAddress);
+    expect(await contract.legacyNFTAddress()).to.equal(landAddress);
+    expect(await contract.owner()).to.equal(owner);
   }
 }

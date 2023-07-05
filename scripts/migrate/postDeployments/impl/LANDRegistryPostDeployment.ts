@@ -6,28 +6,15 @@ import { PostDeployment } from "../PostDeployment";
 
 export class LANDRegistryPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const landRegistryAddress = getAddress(ContractName.LANDRegistry);
+    const address = getAddress(ContractName.LANDRegistry);
+    const abi = getAbi(ContractName.LANDRegistry);
+    const contract = new ethers.Contract(address, abi, signers[0]);
 
-    const landRegistryAbi = getAbi(ContractName.LANDRegistry);
-
-    const initializer = signers[0];
-
-    const landRegistry = new ethers.Contract(landRegistryAddress, landRegistryAbi, initializer);
-
-    const initializeTx = await landRegistry.initialize(ethers.toUtf8Bytes("Nando"));
-
+    const initializeTx = await contract.initialize(ethers.toUtf8Bytes("Nando"));
     await initializeTx.wait();
 
-    const name = await landRegistry.name();
-
-    expect(name).to.equal("Decentraland LAND");
-
-    const symbol = await landRegistry.symbol();
-
-    expect(symbol).to.equal("LAND");
-
-    const description = await landRegistry.description();
-
-    expect(description).to.equal("Contract that stores the Decentraland LAND registry");
+    expect(await contract.name()).to.equal("Decentraland LAND");
+    expect(await contract.symbol()).to.equal("LAND");
+    expect(await contract.description()).to.equal("Contract that stores the Decentraland LAND registry");
   }
 }

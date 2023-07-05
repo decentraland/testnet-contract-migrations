@@ -6,38 +6,19 @@ import { PostDeployment } from "../PostDeployment";
 
 export class EstateRegistryPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const estateRegistryAddress = getAddress(ContractName.EstateRegistry);
+    const address = getAddress(ContractName.EstateRegistry);
+    const abi = getAbi(ContractName.EstateRegistry);
+    const contract = new ethers.Contract(address, abi, signers[0]);
+    const landAddress = getAddress(ContractName.LANDProxy);
 
-    const estateRegistryAbi = getAbi(ContractName.EstateRegistry);
-
-    const initializer = signers[0];
-
-    const estateRegistry = new ethers.Contract(estateRegistryAddress, estateRegistryAbi, initializer);
-
-    const landProxyAddress = getAddress(ContractName.LANDProxy);
-
-    const initialize1Tx = await estateRegistry["initialize(string,string,address)"](
-      "Estate Impl",
-      "EST",
-      landProxyAddress
-    );
-
+    const initialize1Tx = await contract["initialize(string,string,address)"]("Estate Impl", "EST", landAddress);
     await initialize1Tx.wait();
 
-    const initialize2Tx = await estateRegistry["initialize()"]();
-
+    const initialize2Tx = await contract["initialize()"]();
     await initialize2Tx.wait();
 
-    const name = await estateRegistry.name();
-
-    expect(name).to.equal("Estate Impl");
-
-    const symbol = await estateRegistry.symbol();
-
-    expect(symbol).to.equal("EST");
-
-    const description = await estateRegistry.registry();
-
-    expect(description).to.equal(landProxyAddress);
+    expect(await contract.name()).to.equal("Estate Impl");
+    expect(await contract.symbol()).to.equal("EST");
+    expect(await contract.registry()).to.equal(landAddress);
   }
 }

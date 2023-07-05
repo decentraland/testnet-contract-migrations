@@ -6,44 +6,22 @@ import { PostDeployment } from "../PostDeployment";
 
 export class LANDProxyPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const landProxyAddress = getAddress(ContractName.LANDProxy);
+    const address = getAddress(ContractName.LANDProxy);
+    const abi = getAbi(ContractName.LANDProxy);
+    const contract = new ethers.Contract(address, abi, signers[1]);
+    const landAddress = getAddress(ContractName.LANDRegistry);
 
-    const landProxyAbi = getAbi(ContractName.LANDProxy);
-
-    const upgrader = signers[1];
-
-    const landProxy = new ethers.Contract(landProxyAddress, landProxyAbi, upgrader);
-
-    const landRegistryAddress = getAddress(ContractName.LANDRegistry);
-
-    const upgradeTx = await landProxy.upgrade(landRegistryAddress, ethers.toUtf8Bytes("Nando"));
-
+    const upgradeTx = await contract.upgrade(landAddress, ethers.toUtf8Bytes("Nando"));
     await upgradeTx.wait();
 
-    const currentContract = await landProxy.currentContract();
+    expect(await contract.currentContract()).to.equal(landAddress);
+    expect(await contract.proxyOwner()).to.equal(await signers[1].getAddress());
 
-    expect(currentContract).to.equal(landRegistryAddress);
+    const landAbi = getAbi(ContractName.LANDRegistry);
+    const landContract = new ethers.Contract(address, landAbi, signers[0]);
 
-    const proxyOwner = await landProxy.proxyOwner();
-
-    expect(proxyOwner).to.equal(await upgrader.getAddress());
-
-    const landRegistryAbi = getAbi(ContractName.LANDRegistry);
-
-    const otherAccount = signers[0];
-
-    const landRegistry = new ethers.Contract(landProxyAddress, landRegistryAbi, otherAccount);
-
-    const name = await landRegistry.name();
-
-    expect(name).to.equal("Decentraland LAND");
-
-    const symbol = await landRegistry.symbol();
-
-    expect(symbol).to.equal("LAND");
-
-    const description = await landRegistry.description();
-
-    expect(description).to.equal("Contract that stores the Decentraland LAND registry");
+    expect(await landContract.name()).to.equal("Decentraland LAND");
+    expect(await landContract.symbol()).to.equal("LAND");
+    expect(await landContract.description()).to.equal("Contract that stores the Decentraland LAND registry");
   }
 }

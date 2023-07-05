@@ -6,46 +6,27 @@ import { PostDeployment } from "../PostDeployment";
 
 export class MarketplaceProxyPostDeployment extends PostDeployment {
   async exec(signers: ethers.Signer[]): Promise<void> {
-    const marketplaceProxyAddress = getAddress(ContractName.MarketplaceProxy);
+    const address = getAddress(ContractName.MarketplaceProxy);
+    const abi = getAbi(ContractName.Marketplace);
+    const contract = new ethers.Contract(address, abi, signers[0]);
 
-    const marketplaceAbi = getAbi(ContractName.Marketplace);
-
-    const initializer = signers[0];
-
-    const initializerAddress = await initializer.getAddress();
-
-    const marketplace = new ethers.Contract(marketplaceProxyAddress, marketplaceAbi, initializer);
-
-    const initialize1Tx = await marketplace["initialize()"]();
-
+    const initialize1Tx = await contract["initialize()"]();
     await initialize1Tx.wait();
 
-    const manaTokenAddress = getAddress(ContractName.MANAToken);
+    const manaAddress = getAddress(ContractName.MANAToken);
+    const landAddress = getAddress(ContractName.LANDProxy);
+    const owner = await signers[0].getAddress();
 
-    const landProxyAddress = getAddress(ContractName.LANDProxy);
-
-    const initialize2Tx = await marketplace["initialize(address,address,address)"](
-      manaTokenAddress,
-      landProxyAddress,
-      initializerAddress
-    );
-
+    const initialize2Tx = await contract["initialize(address,address,address)"](manaAddress, landAddress, owner);
     await initialize2Tx.wait();
 
-    expect(await marketplace.acceptedToken()).to.equal(manaTokenAddress);
-
-    expect(await marketplace.legacyNFTAddress()).to.equal(landProxyAddress);
-
-    expect(await marketplace.owner()).to.equal(initializerAddress);
+    expect(await contract.acceptedToken()).to.equal(manaAddress);
+    expect(await contract.legacyNFTAddress()).to.equal(landAddress);
+    expect(await contract.owner()).to.equal(owner);
 
     const marketplaceProxyAbi = getAbi(ContractName.MarketplaceProxy);
+    const marketplaceProxy = new ethers.Contract(address, marketplaceProxyAbi, signers[1]);
 
-    const deployer = signers[1];
-
-    const deployerAddress = await deployer.getAddress();
-
-    const marketplaceProxy = new ethers.Contract(marketplaceProxyAddress, marketplaceProxyAbi, deployer);
-
-    expect(await marketplaceProxy.admin()).to.equal(deployerAddress);
+    expect(await marketplaceProxy.admin()).to.equal(await signers[1].getAddress());
   }
 }
