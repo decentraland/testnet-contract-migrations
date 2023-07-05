@@ -47,7 +47,7 @@ async function main() {
 
   try {
     for (const contractName of deploymentOrder) {
-      console.log("Deploying", ContractName[contractName]);
+      console.log("\n", "---", ContractName[contractName], "---", "\n");
 
       const originContractData = originContractsData.get(contractName);
 
@@ -57,13 +57,11 @@ async function main() {
 
       const { sourceCode, creationCode } = originContractData;
 
-      const contractDeployer = contractDeployers.get(contractName);
+      const contractDeployerFunc = contractDeployers.get(contractName);
 
-      const factory = new ethers.ContractFactory(
-        sourceCode.ABI,
-        creationCode,
-        contractDeployer?.(signers) ?? signers[0]
-      );
+      const contractDeployer = contractDeployerFunc?.(signers) ?? signers[0];
+
+      const factory = new ethers.ContractFactory(sourceCode.ABI, creationCode, contractDeployer);
 
       console.log("Deploying contract...");
 
@@ -84,6 +82,8 @@ async function main() {
       deployedContractAddresses.set(contractName, contractAddress);
 
       console.log("Contract deployed at:", contractAddress);
+
+      console.log("Contract deployed by:", await contractDeployer.getAddress());
 
       const postDeployment = postDeployments.get(contractName);
 
