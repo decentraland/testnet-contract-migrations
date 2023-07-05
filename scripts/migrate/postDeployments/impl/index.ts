@@ -8,3 +8,5 @@ export { EstateProxyPostDeployment } from "./EstateProxyPostDeployment";
 export { ERC721BidPostDeployment } from "./ERC721BidPostDeployment";
 export { ExclusiveMasksCollectionPostDeployment } from "./ExclusiveMasksCollectionPostDeployment";
 export { CatalystProxyPostDeployment } from "./CatalystProxyPostDeployment";
+export { POIAllowListProxyPostDeployment } from "./POIAllowListProxyPostDeployment";
+export { NameDenyListProxyPostDeployment } from "./NameDenyListProxyPostDeployment";

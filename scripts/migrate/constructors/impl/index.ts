@@ -5,3 +5,5 @@ export { ExclusiveMasksCollectionConstructorFactory } from "./ExclusiveMasksColl
 export { DCLRegistrarConstructorFactory } from "./DCLRegistrarConstructorFactory";
 export { DCLControllerV2ConstructorFactory } from "./DCLControllerV2ConstructorFactory";
 export { CatalystProxyConstructorFactory } from "./CatalystProxyConstructorFactory";
+export { POIAllowListProxyConstructorFactory } from "./POIAllowListProxyConstructorFactory";
+export { NameDenyListProxyConstructorFactory } from "./NameDenyListProxyConstructorFactory";
