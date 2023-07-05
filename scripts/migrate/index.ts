@@ -49,6 +49,12 @@ async function main() {
     for (const contractName of deploymentOrder) {
       console.log("\n", "---", ContractName[contractName], "---", "\n");
 
+      if (deployedContractAddresses.get(contractName)) {
+        console.log("Contract already deployed, skipping...");
+
+        continue;
+      }
+
       const originContractData = originContractsData.get(contractName);
 
       if (!originContractData) {

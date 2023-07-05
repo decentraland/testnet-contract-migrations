@@ -33,6 +33,7 @@ import {
   POIAllowListProxyConstructorFactory,
   RentalsProxyConstructorFactory,
 } from "./constructors/impl";
+import { migrationsDir } from "./paths";
 
 export const targetChainId: ChainId = (() => {
   const env = process.env.TARGET_CHAIN_ID;
@@ -78,9 +79,13 @@ export const deploymentOrder: ContractName[] = [
   ContractName.MinimalProxyFactory,
 ];
 
-export const originContractsData = loadOriginContractsData();
+export const originContractsData = new Map<ContractName, OriginContractData>();
+
+loadOriginContractsData();
 
 export const deployedContractAddresses = new Map<ContractName, string>();
+
+loadDeployedContractAddresses();
 
 export const contractDeployers = new Map<ContractName, (signers: ethers.Signer[]) => ethers.Signer>();
 
@@ -131,21 +136,15 @@ postDeployments.set(ContractName.OwnableBatchVestingImpl, new OwnableBatchVestin
 // Misc
 
 function loadOriginContractsData() {
-  const originContractDataMap = new Map<ContractName, OriginContractData>();
-
   for (const contract of deploymentOrder) {
-    console.log("Loading contract data for", ContractName[contract]);
-
     const sourceCode = load<SourceCodeData>(sourceCodesDir, contract);
     const creationCode = removeConstructorArgs(load<[string]>(creationCodesDir, contract)[0], sourceCode);
 
-    originContractDataMap.set(contract, {
+    originContractsData.set(contract, {
       creationCode,
       sourceCode,
     });
   }
-
-  return originContractDataMap;
 
   function load<T>(dir: string, contractName: ContractName): T {
     return JSON.parse(fs.readFileSync(`${dir}/${ContractName[contractName]}.json`, `utf-8`));
@@ -158,4 +157,20 @@ function loadOriginContractsData() {
 
 function pickSigner(index: number) {
   return (signers: ethers.Signer[]) => signers[index];
+}
+
+function loadDeployedContractAddresses() {
+  const file = `${migrationsDir}/${targetChainId}.json`;
+
+  if (!fs.existsSync(file)) {
+    return;
+  }
+
+  const migratedContent = fs.readFileSync(file, `utf-8`);
+
+  const migrated = JSON.parse(migratedContent);
+
+  for (const key in migrated) {
+    deployedContractAddresses.set(ContractName[key as keyof typeof ContractName], migrated[key]);
+  }
 }
