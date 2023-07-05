@@ -8,11 +8,10 @@ import { getOriginContractData, getRpcUrl } from "./utils";
 import { ContractName } from "../common/types";
 import {
   constructorFactories,
-  contractDeployers,
+  contractDeployerPickers,
   deployedContractAddresses,
   deployedContractConstructorHexes,
   deploymentOrder,
-  originContractsData,
   postDeployments,
   targetChainId,
 } from "./config";
@@ -60,9 +59,9 @@ async function main() {
 
       const { sourceCode, creationCode } = originContractData;
 
-      const contractDeployerFunc = contractDeployers.get(contractName);
+      const contractDeployerPicker = contractDeployerPickers.get(contractName);
 
-      const contractDeployer = contractDeployerFunc?.(signers) ?? signers[0];
+      const contractDeployer = contractDeployerPicker?.(signers) ?? signers[0];
 
       const factory = new ethers.ContractFactory(sourceCode.ABI, creationCode, contractDeployer);
 
