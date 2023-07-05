@@ -11,3 +11,5 @@ export { CatalystProxyPostDeployment } from "./CatalystProxyPostDeployment";
 export { POIAllowListProxyPostDeployment } from "./POIAllowListProxyPostDeployment";
 export { NameDenyListProxyPostDeployment } from "./NameDenyListProxyPostDeployment";
 export { RentalsProxyPostDeployment } from "./RentalsProxyPostDeployment";
+export { VestingImplPostDeployment } from "./VestingImplPostDeployment";
+export { OwnableBatchVestingImplPostDeployment } from "./OwnableBatchVestingImplPostDeployment";

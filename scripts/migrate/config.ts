@@ -16,8 +16,10 @@ import {
   MarketplacePostDeployment,
   MarketplaceProxyPostDeployment,
   NameDenyListProxyPostDeployment,
+  OwnableBatchVestingImplPostDeployment,
   POIAllowListProxyPostDeployment,
   RentalsProxyPostDeployment,
+  VestingImplPostDeployment,
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
 import {
@@ -66,15 +68,15 @@ export const deploymentOrder: ContractName[] = [
   // ContractName.BaseList,
   // ContractName.POIAllowListProxy,
   // ContractName.NameDenyListProxy,
-  ContractName.RentalsImplementation,
-  ContractName.RentalsProxyAdmin,
-  ContractName.RentalsProxy,
-  // ContractName.VestingImpl,
-  // ContractName.PeriodicTokenVestingImpl,
-  // ContractName.VestingFactory,
-  // ContractName.BatchVesting,
-  // ContractName.OwnableBatchVestingImpl,
-  // ContractName.MinimalProxyFactory,
+  // ContractName.RentalsImplementation,
+  // ContractName.RentalsProxyAdmin,
+  // ContractName.RentalsProxy,
+  ContractName.VestingImpl,
+  ContractName.PeriodicTokenVestingImpl,
+  ContractName.VestingFactory,
+  ContractName.BatchVesting,
+  ContractName.OwnableBatchVestingImpl,
+  ContractName.MinimalProxyFactory,
 ];
 
 export const originContractsData = loadOriginContractsData();
@@ -125,6 +127,8 @@ postDeployments.set(ContractName.CatalystProxy, new CatalystProxyPostDeployment(
 postDeployments.set(ContractName.POIAllowListProxy, new POIAllowListProxyPostDeployment());
 postDeployments.set(ContractName.NameDenyListProxy, new NameDenyListProxyPostDeployment());
 postDeployments.set(ContractName.RentalsProxy, new RentalsProxyPostDeployment());
+postDeployments.set(ContractName.VestingImpl, new VestingImplPostDeployment());
+postDeployments.set(ContractName.OwnableBatchVestingImpl, new OwnableBatchVestingImplPostDeployment());
 
 // Misc
 
