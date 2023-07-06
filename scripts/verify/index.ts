@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+import fetch from 'node-fetch'
 import { deployedContractConstructorHexes, deploymentOrder } from "../migrate/config";
 import { getAddress, getSourceCodeData } from "../migrate/utils";
 import { ContractName } from "../common/types";
