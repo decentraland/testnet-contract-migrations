@@ -16,5 +16,36 @@ export class ExclusiveMasksCollectionPostDeployment extends PostDeployment {
     expect(await contract.baseURI()).to.equal(
       "https://wearable-api.decentraland.org/v2/standards/erc721-metadata/collections/exclusive_masks/wearables/"
     );
+
+    const maxIssuance = 100000n;
+
+    const wearables = [
+      "bird_mask",
+      "classic_mask",
+      "clown_nose",
+      "asian_fox",
+      "killer_mask",
+      "serial_killer_mask",
+      "theater_mask",
+      "tropical_mask",
+    ];
+
+    for (let i = 0; i < wearables.length; i++) {
+      console.log("Adding wearable:", wearables[i]);
+
+      const wearable = wearables[i];
+
+      const addWearableTx = await contract.addWearable(wearable, maxIssuance);
+      await addWearableTx.wait();
+
+      expect(await contract.wearables(i)).to.equal(wearable);
+    }
+
+    console.log("Completing collection...");
+
+    const completeCollectionTx = await contract.completeCollection();
+    await completeCollectionTx.wait();
+
+    expect(await contract.isComplete()).to.be.true;
   }
 }
