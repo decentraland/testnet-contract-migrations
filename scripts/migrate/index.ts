@@ -45,6 +45,8 @@ async function main() {
       ? await new ethers.BrowserProvider(ganacheProvider).listAccounts()
       : process.env.PRIVATE_KEYS!.split(",").map((pk) => new ethers.Wallet(pk, provider as AbstractProvider));
 
+  console.log("Running migrations on chain:", ChainId[targetChainId]);
+
   try {
     for (const contractName of deploymentOrder) {
       console.log("\n", "---", ContractName[contractName], "---", "\n");
