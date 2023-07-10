@@ -20,13 +20,17 @@ async function main() {
     let sourceCode = sourceCodeData.SourceCode;
     let contractFile: string | undefined;
 
+    // All source codes in this format start with {{\r\n
     const isStandardJsonInput = sourceCodeData.SourceCode.startsWith("{{\r\n");
 
     if (isStandardJsonInput) {
+      // For it to be a valid JSON I need to remove the wrapping {}
       sourceCode = sourceCode.slice(1, -1);
 
       const sourceCodeJson = JSON.parse(sourceCode);
 
+      // This source code format requires that the Contract Name is prefixed with the name of the file containing it.
+      // To do this I need find the file that contains the main contract
       for (const key in sourceCodeJson.sources) {
         if ((sourceCodeJson.sources[key].content as string).includes(`contract ${sourceCodeData.ContractName}`)) {
           contractFile = key;
