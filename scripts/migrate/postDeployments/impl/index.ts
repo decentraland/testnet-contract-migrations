@@ -13,3 +13,4 @@ export { RentalsProxyPostDeployment } from "./RentalsProxyPostDeployment";
 export { VestingImplPostDeployment } from "./VestingImplPostDeployment";
 export { OwnableBatchVestingImplPostDeployment } from "./OwnableBatchVestingImplPostDeployment";
 export { DCLControllerV2PostDeployment } from "./DCLControllerV2PostDeployment";
+export { DCLRegistrarPostDeployment } from "./DCLRegistrarPostDeployment";

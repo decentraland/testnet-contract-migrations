@@ -7,6 +7,7 @@ import { ChainId, OriginContractData, SourceCodeData } from "./types";
 import {
   CatalystProxyPostDeployment,
   DCLControllerV2PostDeployment,
+  DCLRegistrarPostDeployment,
   ERC721BidPostDeployment,
   EstateProxyPostDeployment,
   EstateRegistryPostDeployment,
@@ -151,6 +152,7 @@ postDeployments.set(ContractName.RentalsProxy, new RentalsProxyPostDeployment())
 postDeployments.set(ContractName.VestingImpl, new VestingImplPostDeployment());
 postDeployments.set(ContractName.OwnableBatchVestingImpl, new OwnableBatchVestingImplPostDeployment());
 postDeployments.set(ContractName.DCLControllerV2, new DCLControllerV2PostDeployment());
+postDeployments.set(ContractName.DCLRegistrar, new DCLRegistrarPostDeployment());
 
 // Misc
 
