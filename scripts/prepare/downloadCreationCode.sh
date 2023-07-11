@@ -3,7 +3,7 @@
 # Using an sh command instead of a normal javascript fetch because for some reason, etherscan.io does not return the creation code when using a normal fetch.
 # This works... so yeah... :rocket:
 
-curl 'https://etherscan.io/address/'$CONTRACT_ADDRESS \
+curl $ETHERSCAN_URL'/address/'$CONTRACT_ADDRESS \
   -H 'authority: etherscan.io' \
   -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
   -H 'accept-language: en-US,en;q=0.9' \
