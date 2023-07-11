@@ -1,8 +1,3 @@
-export enum ChainId {
-  SEPOLIA = 11155111,
-  GANACHE = 1337,
-}
-
 export type SourceCodeData = {
   SourceCode: string;
   ABI: string;

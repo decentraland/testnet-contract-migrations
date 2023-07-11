@@ -10,11 +10,6 @@ export enum ContractName {
   ExclusiveMasksCollection,
   DCLRegistrar,
   DCLControllerV2,
-  Catalyst,
-  CatalystProxy,
-  BaseList,
-  POIAllowListProxy,
-  NameDenyListProxy,
   RentalsProxyAdmin,
   RentalsProxy,
   RentalsImplementation,
@@ -24,4 +19,14 @@ export enum ContractName {
   BatchVesting,
   OwnableBatchVestingImpl,
   MinimalProxyFactory,
+  NAMEDenylist,
+  Catalyst,
+  POIAllowlist,
+}
+
+export enum ChainId {
+  MAINNET = 1,
+  GOERLI = 5,
+  SEPOLIA = 11155111,
+  GANACHE = 1337,
 }

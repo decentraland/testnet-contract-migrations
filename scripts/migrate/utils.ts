@@ -1,6 +1,6 @@
-import { ContractName } from "../common/types";
+import { ChainId, ContractName } from "../common/types";
 import { deployedContractAddresses, originContractsData } from "./config";
-import { ChainId, OriginContractData, SourceCodeData } from "./types";
+import { OriginContractData, SourceCodeData } from "./types";
 
 export const GANACHE_RPC_URL = "http://localhost:8545";
 export const SEPOLIA_RPC_URL = `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`;
