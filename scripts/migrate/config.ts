@@ -1,11 +1,10 @@
 import { ethers } from "ethers";
 import fs from "fs";
-import { ContractName } from "../common/types";
+import { ChainId, ContractName } from "../common/types";
 import { ConstructorFactory } from "./constructors/ConstructorFactory";
 import { PostDeployment } from "./postDeployments/PostDeployment";
-import { ChainId, OriginContractData, SourceCodeData } from "./types";
+import { OriginContractData, SourceCodeData } from "./types";
 import {
-  CatalystProxyPostDeployment,
   DCLControllerV2PostDeployment,
   DCLRegistrarPostDeployment,
   ERC721BidPostDeployment,
@@ -16,23 +15,20 @@ import {
   LANDRegistryPostDeployment,
   MarketplacePostDeployment,
   MarketplaceProxyPostDeployment,
-  NameDenyListProxyPostDeployment,
+  NAMEDenylistPostDeployment,
   OwnableBatchVestingImplPostDeployment,
-  POIAllowListProxyPostDeployment,
+  POIAllowlistPostDeployment,
   RentalsProxyPostDeployment,
   VestingImplPostDeployment,
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
 import {
-  CatalystProxyConstructorFactory,
   DCLControllerV2ConstructorFactory,
   DCLRegistrarConstructorFactory,
   ERC721BidConstructorFactory,
   EstateProxyConstructorFactory,
   ExclusiveMasksCollectionConstructorFactory,
   MarketplaceProxyConstructorFactory,
-  NameDenyListProxyConstructorFactory,
-  POIAllowListProxyConstructorFactory,
   RentalsProxyConstructorFactory,
 } from "./constructors/impl";
 import { migrationsDir } from "./paths";
@@ -67,11 +63,6 @@ export const deploymentOrder: ContractName[] = [
   ContractName.ExclusiveMasksCollection,
   ContractName.DCLRegistrar,
   ContractName.DCLControllerV2,
-  ContractName.Catalyst,
-  ContractName.CatalystProxy,
-  ContractName.BaseList,
-  ContractName.POIAllowListProxy,
-  ContractName.NameDenyListProxy,
   ContractName.RentalsImplementation,
   ContractName.RentalsProxyAdmin,
   ContractName.RentalsProxy,
@@ -81,6 +72,9 @@ export const deploymentOrder: ContractName[] = [
   ContractName.BatchVesting,
   ContractName.OwnableBatchVestingImpl,
   ContractName.MinimalProxyFactory,
+  ContractName.NAMEDenylist,
+  ContractName.Catalyst,
+  ContractName.POIAllowlist,
 ];
 
 // Origin data of each contract.
@@ -117,9 +111,6 @@ loadDeployedContractData();
 contractDeployerPickers.set(ContractName.LANDProxy, pickSigner(1));
 contractDeployerPickers.set(ContractName.MarketplaceProxy, pickSigner(1));
 contractDeployerPickers.set(ContractName.EstateProxy, pickSigner(1));
-contractDeployerPickers.set(ContractName.CatalystProxy, pickSigner(1));
-contractDeployerPickers.set(ContractName.POIAllowListProxy, pickSigner(1));
-contractDeployerPickers.set(ContractName.NameDenyListProxy, pickSigner(1));
 contractDeployerPickers.set(ContractName.RentalsProxyAdmin, pickSigner(1));
 
 // Constructor Factories
@@ -130,9 +121,6 @@ constructorFactories.set(ContractName.ERC721Bid, new ERC721BidConstructorFactory
 constructorFactories.set(ContractName.ExclusiveMasksCollection, new ExclusiveMasksCollectionConstructorFactory());
 constructorFactories.set(ContractName.DCLRegistrar, new DCLRegistrarConstructorFactory());
 constructorFactories.set(ContractName.DCLControllerV2, new DCLControllerV2ConstructorFactory());
-constructorFactories.set(ContractName.CatalystProxy, new CatalystProxyConstructorFactory());
-constructorFactories.set(ContractName.POIAllowListProxy, new POIAllowListProxyConstructorFactory());
-constructorFactories.set(ContractName.NameDenyListProxy, new NameDenyListProxyConstructorFactory());
 constructorFactories.set(ContractName.RentalsProxy, new RentalsProxyConstructorFactory());
 
 // Post Deployments
@@ -145,14 +133,13 @@ postDeployments.set(ContractName.EstateRegistry, new EstateRegistryPostDeploymen
 postDeployments.set(ContractName.EstateProxy, new EstateProxyPostDeployment());
 postDeployments.set(ContractName.ERC721Bid, new ERC721BidPostDeployment());
 postDeployments.set(ContractName.ExclusiveMasksCollection, new ExclusiveMasksCollectionPostDeployment());
-postDeployments.set(ContractName.CatalystProxy, new CatalystProxyPostDeployment());
-postDeployments.set(ContractName.POIAllowListProxy, new POIAllowListProxyPostDeployment());
-postDeployments.set(ContractName.NameDenyListProxy, new NameDenyListProxyPostDeployment());
 postDeployments.set(ContractName.RentalsProxy, new RentalsProxyPostDeployment());
 postDeployments.set(ContractName.VestingImpl, new VestingImplPostDeployment());
 postDeployments.set(ContractName.OwnableBatchVestingImpl, new OwnableBatchVestingImplPostDeployment());
 postDeployments.set(ContractName.DCLControllerV2, new DCLControllerV2PostDeployment());
 postDeployments.set(ContractName.DCLRegistrar, new DCLRegistrarPostDeployment());
+postDeployments.set(ContractName.NAMEDenylist, new NAMEDenylistPostDeployment());
+postDeployments.set(ContractName.POIAllowlist, new POIAllowlistPostDeployment());
 
 // Misc
 

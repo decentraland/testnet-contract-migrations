@@ -5,7 +5,7 @@ import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
 import fs from "fs";
 import { getOriginContractData, getRpcUrl } from "./utils";
-import { ContractName } from "../common/types";
+import { ChainId, ContractName } from "../common/types";
 import {
   constructorFactories,
   contractDeployerPickers,
@@ -15,7 +15,6 @@ import {
   postDeployments,
   targetChainId,
 } from "./config";
-import { ChainId } from "./types";
 import { migrationsDir } from "./paths";
 
 async function main() {

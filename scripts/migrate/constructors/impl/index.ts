@@ -4,7 +4,4 @@ export { ERC721BidConstructorFactory } from "./ERC721BidConstructorFactory";
 export { ExclusiveMasksCollectionConstructorFactory } from "./ExclusiveMasksCollectionConstructorFactory";
 export { DCLRegistrarConstructorFactory } from "./DCLRegistrarConstructorFactory";
 export { DCLControllerV2ConstructorFactory } from "./DCLControllerV2ConstructorFactory";
-export { CatalystProxyConstructorFactory } from "./CatalystProxyConstructorFactory";
-export { POIAllowListProxyConstructorFactory } from "./POIAllowListProxyConstructorFactory";
-export { NameDenyListProxyConstructorFactory } from "./NameDenyListProxyConstructorFactory";
 export { RentalsProxyConstructorFactory } from "./RentalsProxyConstructorFactory";
