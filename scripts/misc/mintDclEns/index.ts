@@ -61,6 +61,8 @@ async function main() {
     }
   );
   await registerWithConfigTx.wait();
+
+  // After the name is minted. Make sure to transfer it to the DCLRegistrar so dcl.eth subdomains can be minted.
 }
 
 main();
