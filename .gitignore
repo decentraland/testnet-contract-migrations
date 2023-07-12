@@ -1,3 +1,5 @@
 node_modules
 .env
 scripts/migrate/migrations/1337.json
+scripts/misc/mintParcels/batches.json
+scripts/misc/mintParcels/originalCoordsBatches.json
