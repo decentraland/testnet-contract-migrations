@@ -22,6 +22,25 @@ export enum ContractName {
   NAMEDenylist,
   Catalyst,
   POIAllowlist,
+  // Polygon contracts
+  MarketplaceV2,
+  RoyaltiesManager,
+  CollectionImplementation,
+  CollectionFactoryV3,
+  CollectionManager,
+  CollectionStore,
+  Forwarder,
+  Committee,
+  Rarities,
+  RaritiesWithOracle,
+  ChainlinkOracle,
+  DummyDataFeed,
+  UpgradeableBeacon,
+  MetaTxForwarder,
+  POI,
+  TPR,
+  TPRAdmin,
+  TPRProxy,
 }
 
 export enum ChainId {
@@ -29,4 +48,7 @@ export enum ChainId {
   GOERLI = 5,
   SEPOLIA = 11155111,
   GANACHE = 1337,
+  POLYGON = 137,
+  MUMBAI = 80001,
+  AMOY = 80002
 }
