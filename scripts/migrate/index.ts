@@ -4,18 +4,18 @@ dotenv.config();
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
 import fs from "fs";
-import { getOriginContractData, getRpcUrl } from "./utils";
+import { targetChainId } from "../common/utils";
 import { ChainId, ContractName } from "../common/types";
 import {
-  constructorFactories,
   contractDeployerPickers,
   deployedContractAddresses,
   deployedContractConstructorHexes,
-  deploymentOrder,
-  postDeployments,
-  targetChainId,
+  getDeploymentOrder,
+  getPostDeployment,
+  getConstructorFactory,
 } from "./config";
 import { migrationsDir } from "./paths";
+import { getOriginContractData, getRpcUrl } from "./utils";
 
 async function main() {
   const ganacheServer = ganache.server({
@@ -23,7 +23,7 @@ async function main() {
       quiet: true,
     },
     fork: {
-      url: getRpcUrl(ChainId.SEPOLIA),
+      url: getRpcUrl(ChainId.AMOY),
     },
   });
 
@@ -45,6 +45,8 @@ async function main() {
       : process.env.PRIVATE_KEYS!.split(",").map((pk) => new ethers.Wallet(pk, provider as AbstractProvider));
 
   console.log("Running migrations on chain:", ChainId[targetChainId]);
+
+  const deploymentOrder = getDeploymentOrder();
 
   try {
     for (const contractName of deploymentOrder) {
@@ -68,7 +70,7 @@ async function main() {
 
       console.log("Deploying contract...");
 
-      const constructorFactory = constructorFactories.get(contractName);
+      const constructorFactory = getConstructorFactory(contractName);
 
       const constructorArgs = constructorFactory ? await constructorFactory.getConstructorArgs(signers) : [];
 
@@ -90,7 +92,7 @@ async function main() {
 
       console.log("Contract deployed by:", await contractDeployer.getAddress());
 
-      const postDeployment = postDeployments.get(contractName);
+      const postDeployment = getPostDeployment(contractName);
 
       if (postDeployment) {
         console.log("Running post deployment...");

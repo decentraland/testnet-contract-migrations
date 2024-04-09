@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import fs from "fs";
-import { ChainId, ContractName } from "../common/types";
+import { ContractName } from "../common/types";
 import { ConstructorFactory } from "./constructors/ConstructorFactory";
 import { PostDeployment } from "./postDeployments/PostDeployment";
 import { OriginContractData, SourceCodeData } from "./types";
@@ -22,6 +22,7 @@ import {
   VestingImplPostDeployment,
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
+import { isPolygonNetwork, targetChainId } from "../common/utils";
 import {
   DCLControllerV2ConstructorFactory,
   DCLRegistrarConstructorFactory,
@@ -30,25 +31,21 @@ import {
   ExclusiveMasksCollectionConstructorFactory,
   MarketplaceProxyConstructorFactory,
   RentalsProxyConstructorFactory,
+  CommitteeConstructorFactory,
+  MarketplaceV2ConstructorFactory,
+  CollectionManagerConstructorFactory,
+  CollectionFactoryV3ConstructorFactory,
+  UpgradeableBeaconConstructorFactory,
+  DummyDataFeedConstructorFactory,
+  RaritiesConstructorFactory,
+  RaritiesWithOracleConstructorFactory,
+  ChainlinkOracleConstructorFactory,
+  ForwarderConstructorFactory,
+  CollectionStoreConstructorFactory,
+  POIConstructorFactory,
+  PolygonERC721BidConstructorFactory
 } from "./constructors/impl";
 import { migrationsDir } from "./paths";
-
-// The chain into which contracts will be migrated to.
-export const targetChainId: ChainId = (() => {
-  const env = process.env.TARGET_CHAIN_ID;
-
-  if (!env) {
-    throw new Error("TARGET_CHAIN_ID env var not found");
-  }
-
-  const num = Number(env);
-
-  if (!ChainId[num]) {
-    throw new Error("Invalid TARGET_CHAIN_ID");
-  }
-
-  return num;
-})();
 
 // The order in which contracts will be deployed.
 export const deploymentOrder: ContractName[] = [
@@ -77,6 +74,30 @@ export const deploymentOrder: ContractName[] = [
   ContractName.POIAllowlist,
 ];
 
+export const polygonDeploymentOrder: ContractName[] = [
+  ContractName.MetaTxForwarder,
+  ContractName.DummyDataFeed,
+  ContractName.ChainlinkOracle,
+  ContractName.RoyaltiesManager,
+  ContractName.MarketplaceV2,
+  ContractName.ERC721Bid,
+  ContractName.Rarities,
+  ContractName.RaritiesWithOracle,
+  ContractName.CollectionImplementation,
+  ContractName.UpgradeableBeacon,
+  ContractName.Committee,
+  ContractName.CollectionManager,
+  ContractName.Forwarder,
+  ContractName.CollectionFactoryV3,
+  ContractName.CollectionStore,
+  ContractName.TPR,
+  // TODO: Deploy TPRAdmin contract
+  // ContractName.TPRAdmin,
+  // TODO: Deploy TPRProxy contract
+  // ContractName.TPRProxy,
+  ContractName.POI,
+]
+
 // Origin data of each contract.
 // Contains information about ABIs, source codes and other important information from the original contracts.
 export const originContractsData = new Map<ContractName, OriginContractData>();
@@ -94,11 +115,13 @@ export const contractDeployerPickers = new Map<ContractName, (signers: ethers.Si
 
 // Builds the constructor arguments for each contract.
 export const constructorFactories = new Map<ContractName, ConstructorFactory>();
+export const polygonConstructorFactories = new Map<ContractName, ConstructorFactory>();
 
 // Executes post deployment steps for each contract.
 // This steps might contain initializations for proxy contracts as well as checks to determine the deployment
 // has been executed correctly.
 export const postDeployments = new Map<ContractName, PostDeployment>();
+export const polygonPostDeployments = new Map<ContractName, PostDeployment>();
 
 // Loads the data that has been downloaded through the `prepare` script.
 loadOriginContractsData();
@@ -107,14 +130,12 @@ loadOriginContractsData();
 loadDeployedContractData();
 
 // Contract Deployers
-
 contractDeployerPickers.set(ContractName.LANDProxy, pickSigner(1));
 contractDeployerPickers.set(ContractName.MarketplaceProxy, pickSigner(1));
 contractDeployerPickers.set(ContractName.EstateProxy, pickSigner(1));
 contractDeployerPickers.set(ContractName.RentalsProxyAdmin, pickSigner(1));
 
 // Constructor Factories
-
 constructorFactories.set(ContractName.EstateProxy, new EstateProxyConstructorFactory());
 constructorFactories.set(ContractName.MarketplaceProxy, new MarketplaceProxyConstructorFactory());
 constructorFactories.set(ContractName.ERC721Bid, new ERC721BidConstructorFactory());
@@ -123,8 +144,22 @@ constructorFactories.set(ContractName.DCLRegistrar, new DCLRegistrarConstructorF
 constructorFactories.set(ContractName.DCLControllerV2, new DCLControllerV2ConstructorFactory());
 constructorFactories.set(ContractName.RentalsProxy, new RentalsProxyConstructorFactory());
 
-// Post Deployments
+// Polygon Constructor Factories
+polygonConstructorFactories.set(ContractName.DummyDataFeed, new DummyDataFeedConstructorFactory());
+polygonConstructorFactories.set(ContractName.ChainlinkOracle, new ChainlinkOracleConstructorFactory());
+polygonConstructorFactories.set(ContractName.MarketplaceV2, new MarketplaceV2ConstructorFactory());
+polygonConstructorFactories.set(ContractName.ERC721Bid, new PolygonERC721BidConstructorFactory());
+polygonConstructorFactories.set(ContractName.Rarities, new RaritiesConstructorFactory());
+polygonConstructorFactories.set(ContractName.RaritiesWithOracle, new RaritiesWithOracleConstructorFactory());
+polygonConstructorFactories.set(ContractName.UpgradeableBeacon, new UpgradeableBeaconConstructorFactory());
+polygonConstructorFactories.set(ContractName.Committee, new CommitteeConstructorFactory());
+polygonConstructorFactories.set(ContractName.CollectionManager, new CollectionManagerConstructorFactory());
+polygonConstructorFactories.set(ContractName.CollectionFactoryV3, new CollectionFactoryV3ConstructorFactory());
+polygonConstructorFactories.set(ContractName.CollectionStore, new CollectionStoreConstructorFactory());
+polygonConstructorFactories.set(ContractName.Forwarder, new ForwarderConstructorFactory());
+polygonConstructorFactories.set(ContractName.POI, new POIConstructorFactory());
 
+// Post Deployments
 postDeployments.set(ContractName.LANDRegistry, new LANDRegistryPostDeployment());
 postDeployments.set(ContractName.LANDProxy, new LANDProxyPostDeployment());
 postDeployments.set(ContractName.Marketplace, new MarketplacePostDeployment());
@@ -142,9 +177,36 @@ postDeployments.set(ContractName.NAMEDenylist, new NAMEDenylistPostDeployment())
 postDeployments.set(ContractName.POIAllowlist, new POIAllowlistPostDeployment());
 
 // Misc
+export function getDeployedContracts(contractName: ContractName) {
+  return deployedContractAddresses.get(contractName);
+}
+
+export function getDeploymentOrder(): ContractName[] {
+  if (isPolygonNetwork()) {
+    return polygonDeploymentOrder
+  }
+
+  return deploymentOrder
+}
+
+export function getPostDeployment(contractName: ContractName): PostDeployment | undefined {
+  if (isPolygonNetwork()) {
+    return polygonPostDeployments.get(contractName)
+  }
+
+  return postDeployments.get(contractName);
+}
+
+export function getConstructorFactory(contractName: ContractName): ConstructorFactory | undefined {
+  if (isPolygonNetwork()) {
+    return polygonConstructorFactories.get(contractName)
+  }
+
+  return constructorFactories.get(contractName);
+}
 
 function loadOriginContractsData() {
-  for (const contract of deploymentOrder) {
+  for (const contract of getDeploymentOrder()) {
     const sourceCode = load<SourceCodeData>(sourceCodesDir, contract);
     const creationCode = removeConstructorArgs(load<[string]>(creationCodesDir, contract)[0], sourceCode);
 
