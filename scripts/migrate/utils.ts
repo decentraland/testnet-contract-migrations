@@ -4,6 +4,7 @@ import { OriginContractData, SourceCodeData } from "./types";
 
 export const GANACHE_RPC_URL = "http://localhost:8545";
 export const SEPOLIA_RPC_URL = `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`;
+export const AMOY_RPC_URL = 'https://rpc.decentraland.org/amoy'
 
 export function getRpcUrl(chainId: ChainId): string {
   switch (chainId) {
@@ -11,6 +12,8 @@ export function getRpcUrl(chainId: ChainId): string {
       return GANACHE_RPC_URL;
     case ChainId.SEPOLIA:
       return SEPOLIA_RPC_URL;
+    case ChainId.AMOY:
+      return AMOY_RPC_URL;
     default:
       throw new Error("Chain ID not supported");
   }
