@@ -10,7 +10,7 @@ export async function downloadCreationCode() {
   for (const [name, address] of getOriginContractAddresses()) {
     console.log("Downloading creation code for", ContractName[name]);
 
-    const chainId = getOriginContractChains(name) || ChainId.MAINNET;
+    const chainId = getOriginContractChains(name);
     const url = getEtherscanUrl(chainId);
     const res = spawnSync(path.resolve(__dirname, "downloadCreationCode.sh"), {
       env: { ETHERSCAN_URL: url, CONTRACT_ADDRESS: address },

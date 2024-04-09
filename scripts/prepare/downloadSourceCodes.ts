@@ -8,7 +8,7 @@ export async function downloadSourceCodes() {
     console.log("Downloading source code data for", ContractName[name]);
 
     const apiKey = process.env.ETHERSCAN_API_KEY;
-    const chainId = getOriginContractChains(name) || ChainId.MAINNET;
+    const chainId = getOriginContractChains(name);
     const url = getEtherscanUrl(chainId);
 
     await downloadFromEtherscan(
