@@ -1,5 +1,5 @@
 import { ChainId, ContractName } from '../common/types'
-import { isPolygonNetwork } from '../common/utils'
+import { isPolygonNetwork, originChainId } from '../common/utils'
 
 export const originContractAddresses = new Map<ContractName, string>()
 export const originPolygonContractAddresses = new Map<ContractName, string>()
@@ -65,7 +65,7 @@ originContractChains.set(ContractName.POIAllowlist, ChainId.GOERLI)
 originContractChains.set(ContractName.DummyDataFeed, ChainId.MUMBAI)
 
 export function getOriginContractAddresses(): Map<ContractName, string> {
-  if (isPolygonNetwork()) {
+  if (isPolygonNetwork(originChainId)) {
     return originPolygonContractAddresses
   }
 
@@ -73,7 +73,7 @@ export function getOriginContractAddresses(): Map<ContractName, string> {
 }
 
 export function getOriginContractChains(contractName: ContractName): ChainId {
-  if (isPolygonNetwork()) {
+  if (isPolygonNetwork(originChainId)) {
     return originContractChains.get(contractName) || ChainId.MATIC
   }
 

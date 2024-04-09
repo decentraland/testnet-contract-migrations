@@ -4,8 +4,8 @@ dotenv.config();
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
 import fs from "fs";
-import { targetChainId } from "../common/utils";
-import { ChainId, ContractName } from "../common/types";
+import { isPolygonNetwork, targetChainId } from "../common/utils";
+import { ChainId, ContractName, MANAToken } from "../common/types";
 import {
   contractDeployerPickers,
   deployedContractAddresses,
@@ -22,9 +22,7 @@ async function main() {
     logging: {
       quiet: true,
     },
-    fork: {
-      url: getRpcUrl(targetChainId)
-    },
+    ...(targetChainId !== ChainId.GANACHE ? { fork: { url: getRpcUrl(targetChainId) } } : {}),
   });
 
   const ganacheProvider = await new Promise<EthereumProvider>((resolve, reject) => {
@@ -98,6 +96,18 @@ async function main() {
         console.log("Running post deployment...");
 
         await postDeployment.exec(signers);
+      }
+
+      // Init MANAToken address
+      if (!deployedContractAddresses.get(ContractName.MANAToken)) {
+        if (isPolygonNetwork(targetChainId)) {
+          deployedContractAddresses.set(ContractName.MANAToken, MANAToken[targetChainId]);
+          console.log('Initializing MANAToken address with:', MANAToken[targetChainId])
+        } else if (targetChainId === ChainId.GANACHE) {
+          // Using any deployed valid contract address for MANAToken 
+          deployedContractAddresses.set(ContractName.MANAToken, contractAddress);
+          console.log('Initializing MANAToken address with:', contractAddress)
+        }
       }
 
       console.log(`Finished ${ContractName[contractName]} deployment :D`);

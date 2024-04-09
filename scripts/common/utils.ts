@@ -26,10 +26,10 @@ export const targetChainId: ChainId = (() => {
   return num;
 })();
 
-export function isEthereumNetwork(): boolean {
-  return [ChainId.MAINNET, ChainId.GOERLI, ChainId.SEPOLIA].includes(originChainId)
+export function isEthereumNetwork(chainId: ChainId): boolean {
+  return [ChainId.MAINNET, ChainId.GOERLI, ChainId.SEPOLIA].includes(chainId)
 }
 
-export function isPolygonNetwork(): boolean {
-  return [ChainId.MATIC, ChainId.MUMBAI, ChainId.AMOY].includes(originChainId)
+export function isPolygonNetwork(chainId: ChainId): boolean {
+  return [ChainId.MATIC, ChainId.MUMBAI, ChainId.AMOY].includes(chainId)
 }

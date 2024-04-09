@@ -22,7 +22,7 @@ import {
   VestingImplPostDeployment,
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
-import { isPolygonNetwork, targetChainId } from "../common/utils";
+import { isPolygonNetwork, originChainId, targetChainId } from "../common/utils";
 import {
   DCLControllerV2ConstructorFactory,
   DCLRegistrarConstructorFactory,
@@ -182,7 +182,7 @@ export function getDeployedContracts(contractName: ContractName) {
 }
 
 export function getDeploymentOrder(): ContractName[] {
-  if (isPolygonNetwork()) {
+  if (isPolygonNetwork(originChainId)) {
     return polygonDeploymentOrder
   }
 
@@ -190,7 +190,7 @@ export function getDeploymentOrder(): ContractName[] {
 }
 
 export function getPostDeployment(contractName: ContractName): PostDeployment | undefined {
-  if (isPolygonNetwork()) {
+  if (isPolygonNetwork(originChainId)) {
     return polygonPostDeployments.get(contractName)
   }
 
@@ -198,7 +198,7 @@ export function getPostDeployment(contractName: ContractName): PostDeployment | 
 }
 
 export function getConstructorFactory(contractName: ContractName): ConstructorFactory | undefined {
-  if (isPolygonNetwork()) {
+  if (isPolygonNetwork(originChainId)) {
     return polygonConstructorFactories.get(contractName)
   }
 

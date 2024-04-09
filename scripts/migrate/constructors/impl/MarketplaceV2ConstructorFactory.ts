@@ -23,7 +23,7 @@ export class MarketplaceV2ConstructorFactory extends ConstructorFactory {
     return [
       owner,
       owner,
-      '0x7ad72b9f944ea9793cf4055d88f81138cc2c63a0', // MANA Token address
+      getAddress(ContractName.MANAToken),
       getAddress(ContractName.RoyaltiesManager),
       FEES_COLLECTOR_CUT_PER_MILLION,
       ROYALTIES_CUT_PER_MILLION

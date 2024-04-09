@@ -13,7 +13,7 @@ export class CollectionStoreConstructorFactory extends ConstructorFactory {
 
     return [
       owner,
-      "0x7AD72b9f944eA9793cf4055D88F81138Cc2C63a0", // MANA Token address
+      getAddress(ContractName.MANAToken),
       owner,
       OWNER_CUT_PER_MILLION
     ];
