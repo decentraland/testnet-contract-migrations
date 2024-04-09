@@ -23,7 +23,7 @@ async function main() {
       quiet: true,
     },
     fork: {
-      url: getRpcUrl(ChainId.AMOY),
+      url: getRpcUrl(targetChainId)
     },
   });
 
