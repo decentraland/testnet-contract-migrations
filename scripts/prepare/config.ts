@@ -34,23 +34,26 @@ originContractAddresses.set(ContractName.Catalyst, '0x380e46851c47b73b6aa9bea50c
 originContractAddresses.set(ContractName.POIAllowlist, '0xb8c7a7afd42675ab61f0a3732f8d0491825a933b')
 
 // Polygon Contracts
-// originPolygonContractAddresses.set(ContractName.MANAToken, '0x7AD72b9f944eA9793cf4055D88F81138Cc2C63a0')
-originPolygonContractAddresses.set(ContractName.Committee, '0xaeec95a8aa671a6d3fec56594827d7804964fa70')
 originPolygonContractAddresses.set(ContractName.MetaTxForwarder, '0x0babda04f62c549a09ef3313fe187f29c099ff3c')
-originPolygonContractAddresses.set(ContractName.CollectionImplementation, '0x006080C6061C4aF79b39Da0842a3a22A7b3f185e')
-originPolygonContractAddresses.set(ContractName.CollectionManager, '0x9D32AaC179153A991e832550d9F96441Ea27763A')
-originPolygonContractAddresses.set(ContractName.CollectionFactoryV3, '0x3195e88aE10704b359764CB38e429D24f1c2f781')
-originPolygonContractAddresses.set(ContractName.Forwarder, '0xBF6755A83C0dCDBB2933A96EA778E00b717d7004')
-originPolygonContractAddresses.set(ContractName.UpgradeableBeacon, '0xDDb3781Fff645325C8896AA1F067bAa381607ecc')
-originPolygonContractAddresses.set(ContractName.ERC721Bid, '0xb96697FA4A3361Ba35B774a42c58dACcaAd1B8E1')
-originPolygonContractAddresses.set(ContractName.MarketplaceV2, '0x480a0f4e360E8964e68858Dd231c2922f1df45Ef')
-originPolygonContractAddresses.set(ContractName.RoyaltiesManager, '0x90958D4531258ca11D18396d4174a007edBc2b42')
 originPolygonContractAddresses.set(ContractName.DummyDataFeed, '0x5521ade5494225e0936c74f97e474107d73c406e')
-originPolygonContractAddresses.set(ContractName.Rarities, '0x17113b44fdd661A156cc01b5031E3aCF72c32EB3')
 originPolygonContractAddresses.set(ContractName.ChainlinkOracle, '0x1a91dd8d4eeddc2fac31f36818604b7093dc95e0')
+originPolygonContractAddresses.set(ContractName.RoyaltiesManager, '0x90958D4531258ca11D18396d4174a007edBc2b42')
+originPolygonContractAddresses.set(ContractName.MarketplaceV2, '0x480a0f4e360E8964e68858Dd231c2922f1df45Ef')
+originPolygonContractAddresses.set(ContractName.ERC721Bid, '0xb96697FA4A3361Ba35B774a42c58dACcaAd1B8E1')
+originPolygonContractAddresses.set(ContractName.Rarities, '0x17113b44fdd661A156cc01b5031E3aCF72c32EB3')
 originPolygonContractAddresses.set(ContractName.RaritiesWithOracle, '0xA9158E22F89Bb3F69c5600338895Cb5FB81e5090')
+originPolygonContractAddresses.set(ContractName.CollectionImplementation, '0x006080C6061C4aF79b39Da0842a3a22A7b3f185e')
+originPolygonContractAddresses.set(ContractName.UpgradeableBeacon, '0xDDb3781Fff645325C8896AA1F067bAa381607ecc')
+originPolygonContractAddresses.set(ContractName.Committee, '0xaeec95a8aa671a6d3fec56594827d7804964fa70')
+originPolygonContractAddresses.set(ContractName.CollectionManager, '0x9D32AaC179153A991e832550d9F96441Ea27763A')
+originPolygonContractAddresses.set(ContractName.Forwarder, '0xBF6755A83C0dCDBB2933A96EA778E00b717d7004')
+originPolygonContractAddresses.set(ContractName.CollectionFactoryV3, '0x3195e88aE10704b359764CB38e429D24f1c2f781')
 originPolygonContractAddresses.set(ContractName.CollectionStore, '0x214ffC0f0103735728dc66b61A22e4F163e275ae')
 originPolygonContractAddresses.set(ContractName.TPR, '0x1f8063CC04398Be214a7d8dD25B6b6e2b870d99e')
+// TODO: Validate TPRAdmin contract
+// originPolygonContractAddresses.set(ContractName.TPRAdmin, '0xF44063d872C88eEBab2EFC0318194e75a5218C1E')
+// TODO: Validate TPRProxy contract
+// originPolygonContractAddresses.set(ContractName.TPRProxy, '0x1C436C1EFb4608dFfDC8bace99d2B03c314f3348')
 originPolygonContractAddresses.set(ContractName.POI, '0xFEC09d5C192aaf7Ec7E2C89Cc8D3224138391B2E')
 
 // There is no need to define contracts deployed to Mainnet here.
@@ -71,7 +74,7 @@ export function getOriginContractAddresses(): Map<ContractName, string> {
 
 export function getOriginContractChains(contractName: ContractName): ChainId {
   if (isPolygonNetwork()) {
-    return originContractChains.get(contractName) || ChainId.POLYGON
+    return originContractChains.get(contractName) || ChainId.MATIC
   }
 
   return originContractChains.get(contractName) || ChainId.MAINNET

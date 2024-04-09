@@ -31,5 +31,5 @@ export function isEthereumNetwork(): boolean {
 }
 
 export function isPolygonNetwork(): boolean {
-  return [ChainId.POLYGON, ChainId.MUMBAI, ChainId.AMOY].includes(originChainId)
+  return [ChainId.MATIC, ChainId.MUMBAI, ChainId.AMOY].includes(originChainId)
 }

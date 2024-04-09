@@ -48,7 +48,7 @@ export enum ChainId {
   GOERLI = 5,
   SEPOLIA = 11155111,
   GANACHE = 1337,
-  POLYGON = 137,
+  MATIC = 137,
   MUMBAI = 80001,
   AMOY = 80002
 }

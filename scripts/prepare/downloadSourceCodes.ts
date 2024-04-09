@@ -25,7 +25,7 @@ function getEtherscanUrl(chainId: ChainId) {
       return "https://api.etherscan.io";
     case ChainId.GOERLI:
       return "https://api-goerli.etherscan.io";
-    case ChainId.POLYGON:
+    case ChainId.MATIC:
       return "https://api.polygonscan.com";
     case ChainId.MUMBAI:
       return "https://api-testnet.polygonscan.com";

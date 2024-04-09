@@ -20,6 +20,13 @@ export class PolygonERC721BidConstructorFactory extends ConstructorFactory {
   async getConstructorArgs(signers: ethers.Signer[]): Promise<ContractMethodArgs<any[]>> {
     const owner = await signers[0].getAddress();
 
-    return [owner, owner, "0x7ad72b9f944ea9793cf4055d88f81138cc2c63a0", getAddress(ContractName.RoyaltiesManager), FEES_COLLECTOR_CUT_PER_MILLION, ROYALTIES_CUT_PER_MILLION];
+    return [
+      owner,
+      owner,
+      "0x7ad72b9f944ea9793cf4055d88f81138cc2c63a0", // MANA Token address
+      getAddress(ContractName.RoyaltiesManager),
+      FEES_COLLECTOR_CUT_PER_MILLION,
+      ROYALTIES_CUT_PER_MILLION
+    ];
   }
 }
