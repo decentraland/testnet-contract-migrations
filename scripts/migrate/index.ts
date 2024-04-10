@@ -4,27 +4,25 @@ dotenv.config();
 import { AbstractProvider, Signer, ethers } from "ethers";
 import ganache, { EthereumProvider } from "ganache";
 import fs from "fs";
-import { getOriginContractData, getRpcUrl } from "./utils";
-import { ChainId, ContractName } from "../common/types";
+import { forkChainId, isPolygonNetwork, targetChainId } from "../common/utils";
+import { ChainId, ContractName, MANAToken } from "../common/types";
 import {
-  constructorFactories,
   contractDeployerPickers,
   deployedContractAddresses,
   deployedContractConstructorHexes,
-  deploymentOrder,
-  postDeployments,
-  targetChainId,
+  getDeploymentOrder,
+  getPostDeployment,
+  getConstructorFactory,
 } from "./config";
 import { migrationsDir } from "./paths";
+import { getOriginContractData, getRpcUrl } from "./utils";
 
 async function main() {
   const ganacheServer = ganache.server({
     logging: {
       quiet: true,
     },
-    fork: {
-      url: getRpcUrl(ChainId.SEPOLIA),
-    },
+    ...(forkChainId ? { fork: { url: getRpcUrl(forkChainId) } } : {}),
   });
 
   const ganacheProvider = await new Promise<EthereumProvider>((resolve, reject) => {
@@ -45,6 +43,8 @@ async function main() {
       : process.env.PRIVATE_KEYS!.split(",").map((pk) => new ethers.Wallet(pk, provider as AbstractProvider));
 
   console.log("Running migrations on chain:", ChainId[targetChainId]);
+
+  const deploymentOrder = getDeploymentOrder();
 
   try {
     for (const contractName of deploymentOrder) {
@@ -68,7 +68,7 @@ async function main() {
 
       console.log("Deploying contract...");
 
-      const constructorFactory = constructorFactories.get(contractName);
+      const constructorFactory = getConstructorFactory(contractName);
 
       const constructorArgs = constructorFactory ? await constructorFactory.getConstructorArgs(signers) : [];
 
@@ -90,12 +90,24 @@ async function main() {
 
       console.log("Contract deployed by:", await contractDeployer.getAddress());
 
-      const postDeployment = postDeployments.get(contractName);
+      const postDeployment = getPostDeployment(contractName);
 
       if (postDeployment) {
         console.log("Running post deployment...");
 
         await postDeployment.exec(signers);
+      }
+
+      // Init MANAToken address
+      if (!deployedContractAddresses.get(ContractName.MANAToken)) {
+        if (forkChainId && isPolygonNetwork(forkChainId)) {
+          deployedContractAddresses.set(ContractName.MANAToken, MANAToken[forkChainId]);
+          console.log('Initializing MANAToken address with:', MANAToken[forkChainId])
+        } else if (targetChainId === ChainId.GANACHE) {
+          // Using any deployed valid contract address for MANAToken 
+          deployedContractAddresses.set(ContractName.MANAToken, contractAddress);
+          console.log('Initializing MANAToken address with:', contractAddress)
+        }
       }
 
       console.log(`Finished ${ContractName[contractName]} deployment :D`);

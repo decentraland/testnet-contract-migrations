@@ -12,6 +12,14 @@ This is the identifier of the chain to which contracts will be migrated. It shou
 
 Ganache (Local Blockchain for testing) has a chain ID of `1337`. If you define this chain ID, the migration will be run against a local blockchain. We recommend using this approach before the actual migration.
 
+**ORIGIN_CHAIN_ID**
+
+This is the identifier of the chain from which contracts will be migrated. It should be the identifier of the chain, not the name. For instance, Sepolia has a chain ID of `11155111`. By default it will be set to `1` (Mainnet).
+
+**FORK_CHAIN_ID**
+
+This is the identifier of the chain from which blockchain will be forked. It should be the identifier of the chain, not the name. For instance, Sepolia has a chain ID of `11155111`. By default it will be `undefined` so the development blockchain will start empty.
+
 **ETHERSCAN_API_KEY**
 
 This key provides access to the Etherscan API, from which the origin contract data is downloaded, and where contract verifications are performed.
@@ -30,7 +38,7 @@ Infura is used as the RPC node for deploying the contracts and all other blockch
 
 This step only needs to be executed once unless new contracts are added when a new migration is required. This is because blockchain data is immutable, making multiple fetches unnecessary.
 
-Running `npx ts-node scripts/prepare` will download mainnet contract data from the Etherscan API, as defined in https://docs.etherscan.io/api-endpoints/contracts#get-contract-source-code-for-verified-contract-source-codes. It also downloads the contract creation code that was used to deploy the contracts. With both the source code data and the creation code, we can deploy, initialize, and verify the contracts in the following steps.
+Running `npm run prepare` will download mainnet contract data from the Etherscan API, as defined in <https://docs.etherscan.io/api-endpoints/contracts#get-contract-source-code-for-verified-contract-source-codes>. It also downloads the contract creation code that was used to deploy the contracts. With both the source code data and the creation code, we can deploy, initialize, and verify the contracts in the following steps.
 
 The contract data that will be downloaded is defined by the map in `scripts/prepare/config.ts`. Whenever something new is added to that map, we recommend running the prepare command again to have all new data available.
 
@@ -38,7 +46,7 @@ The downloaded data can be found in the `scripts/prepare/downloads` directory.
 
 **2 - Run the migration**
 
-Once you have prepared the necessary data, you can execute `npx ts-node scripts/migrate` to begin migrations. 
+Once you have prepared the necessary data, you can execute `npm run migrate` to begin migrations.
 
 Configurations can be found in the `scripts/migrate/config.ts` file, where the following parameters can be defined:
 
