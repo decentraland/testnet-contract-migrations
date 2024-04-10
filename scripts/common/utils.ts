@@ -26,6 +26,22 @@ export const targetChainId: ChainId = (() => {
   return num;
 })();
 
+export const forkChainId: ChainId | undefined = (() => {
+  const env = process.env.FORK_CHAIN_ID;
+
+  if (!env) {
+    return undefined;
+  }
+
+  const num = Number(env);
+
+  if (!ChainId[num]) {
+    throw new Error("Invalid FORK_CHAIN_ID");
+  }
+
+  return num;
+})()
+
 export function isEthereumNetwork(chainId: ChainId): boolean {
   return [ChainId.MAINNET, ChainId.GOERLI, ChainId.SEPOLIA].includes(chainId)
 }
