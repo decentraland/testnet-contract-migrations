@@ -27,7 +27,7 @@ export class CollectionManagerConstructorFactory extends ConstructorFactory {
       getAddress(ContractName.MANAToken),
       getAddress(ContractName.Committee),
       owner,
-      getAddress(ContractName.Rarities),
+      getAddress(ContractName.RaritiesWithOracle),
       [RESCUE_ITEMS_SELECTOR, SET_APPROVE_COLLECTION_SELECTOR, SET_EDITABLE_SELECTOR],
       [true, true, true]
     ];
