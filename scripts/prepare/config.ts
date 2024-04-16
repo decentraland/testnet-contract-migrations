@@ -54,6 +54,7 @@ originPolygonContractAddresses.set(ContractName.TPR, '0x1f8063CC04398Be214a7d8dD
 // TODO: Validate TPRProxy contract
 // originPolygonContractAddresses.set(ContractName.TPRProxy, '0x1C436C1EFb4608dFfDC8bace99d2B03c314f3348')
 originPolygonContractAddresses.set(ContractName.POI, '0xFEC09d5C192aaf7Ec7E2C89Cc8D3224138391B2E')
+originPolygonContractAddresses.set(ContractName.Checker, '0xC2D0637FE019817b7B307b9B966E4400EB4aC165')
 
 // There is no need to define contracts deployed to Mainnet here.
 // Ethereum Chains
