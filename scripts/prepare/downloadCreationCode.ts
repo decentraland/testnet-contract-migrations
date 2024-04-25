@@ -37,6 +37,8 @@ function getEtherscanUrl(chainId: ChainId) {
       return "https://polygonscan.com";
     case ChainId.MUMBAI:
       return "https://mumbai.polygonscan.com";
+    case ChainId.AMOY:
+      return "https://amoy.polygonscan.com";
     default:
       throw new Error(`Etherscan URL not found for chain ${chainId}`);
   }

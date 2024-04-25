@@ -2,12 +2,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import fetch from "node-fetch";
-import { deployedContractConstructorHexes, deploymentOrder } from "../migrate/config";
+import { deployedContractConstructorHexes, getDeploymentOrder } from "../migrate/config";
+import { getEtherscanUrl, targetChainId } from "../common/utils";
 import { getAddress, getSourceCodeData } from "../migrate/utils";
 import { ContractName } from "../common/types";
 
 async function main() {
-  for (const contractName of deploymentOrder) {
+  for (const contractName of getDeploymentOrder()) {
     console.log(`\n--- ${ContractName[contractName]} ---\n`);
 
     // Wait a second to prevent rate limiting
@@ -59,7 +60,7 @@ async function main() {
       constructorArguements: constructorHex.replace("0x", ""),
     });
 
-    const res = await fetch("https://api-sepolia.etherscan.io/api", {
+    const res = await fetch(`${getEtherscanUrl(targetChainId)}/api`, {
       method: "post",
       body: parameters,
       headers: { "Content-Type": "application/x-www-form-urlencoded" },

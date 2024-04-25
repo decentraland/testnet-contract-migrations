@@ -49,3 +49,21 @@ export function isEthereumNetwork(chainId: ChainId): boolean {
 export function isPolygonNetwork(chainId: ChainId): boolean {
   return [ChainId.MATIC, ChainId.MUMBAI, ChainId.AMOY].includes(chainId)
 }
+
+
+export function getEtherscanUrl(chainId: ChainId) {
+  switch (chainId) {
+    case ChainId.MAINNET:
+      return "https://api.etherscan.io";
+    case ChainId.GOERLI:
+      return "https://api-goerli.etherscan.io";
+    case ChainId.MATIC:
+      return "https://api.polygonscan.com";
+    case ChainId.MUMBAI:
+      return "https://api-testnet.polygonscan.com";
+    case ChainId.AMOY:
+      return "https://api-amoy.polygonscan.com";
+    default:
+      throw new Error(`Etherscan URL not found for chain ${chainId}`);
+  }
+}
