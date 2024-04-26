@@ -41,6 +41,7 @@ export enum ContractName {
   TPR,
   TPRAdmin,
   TPRProxy,
+  Checker
 }
 
 export enum ChainId {

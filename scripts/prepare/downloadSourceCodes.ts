@@ -1,5 +1,6 @@
 import { sourceCodesDir } from "../common/paths";
-import { ChainId, ContractName } from "../common/types";
+import { getEtherscanUrl } from "../common/utils";
+import { ContractName } from "../common/types";
 import { downloadFromEtherscan } from "./downloadFromEtherscan";
 import { getOriginContractAddresses, getOriginContractChains } from "./config";
 
@@ -19,17 +20,3 @@ export async function downloadSourceCodes() {
   }
 }
 
-function getEtherscanUrl(chainId: ChainId) {
-  switch (chainId) {
-    case ChainId.MAINNET:
-      return "https://api.etherscan.io";
-    case ChainId.GOERLI:
-      return "https://api-goerli.etherscan.io";
-    case ChainId.MATIC:
-      return "https://api.polygonscan.com";
-    case ChainId.MUMBAI:
-      return "https://api-testnet.polygonscan.com";
-    default:
-      throw new Error(`Etherscan URL not found for chain ${chainId}`);
-  }
-}

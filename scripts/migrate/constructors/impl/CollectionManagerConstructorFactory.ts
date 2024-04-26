@@ -15,7 +15,7 @@ export class CollectionManagerConstructorFactory extends ConstructorFactory {
     * @param _acceptedToken - accepted ERC20 token for collection deployment
     * @param _committee - committee contract
     * @param _feesCollector - fees collector
-    * @param _rarities - rarities contract
+    * @param _rarities - rarities with oracle contract
     * @param _committeeMethods - method selectors
     * @param _committeeValues - whether the method is allowed or not
     */

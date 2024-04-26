@@ -11,7 +11,6 @@ export { CollectionManagerConstructorFactory } from "./CollectionManagerConstruc
 export { CollectionFactoryV3ConstructorFactory } from "./CollectionFactoryV3ConstructorFactory"
 export { UpgradeableBeaconConstructorFactory } from "./UpgradeableBeaconConstructorFactory"
 export { DummyDataFeedConstructorFactory } from "./DummyDataFeedConstructorFactory"
-export { RaritiesConstructorFactory } from "./RaritiesConstructorFactory"
 export { RaritiesWithOracleConstructorFactory } from "./RaritiesWithOracleConstructorFactory"
 export { ChainlinkOracleConstructorFactory } from "./ChainlinkOracleConstructorFactory"
 export { ForwarderConstructorFactory } from "./ForwarderConstructorFactory"

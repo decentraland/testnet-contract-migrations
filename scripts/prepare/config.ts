@@ -40,7 +40,6 @@ originPolygonContractAddresses.set(ContractName.ChainlinkOracle, '0x1a91dd8d4eed
 originPolygonContractAddresses.set(ContractName.RoyaltiesManager, '0x90958D4531258ca11D18396d4174a007edBc2b42')
 originPolygonContractAddresses.set(ContractName.MarketplaceV2, '0x480a0f4e360E8964e68858Dd231c2922f1df45Ef')
 originPolygonContractAddresses.set(ContractName.ERC721Bid, '0xb96697FA4A3361Ba35B774a42c58dACcaAd1B8E1')
-originPolygonContractAddresses.set(ContractName.Rarities, '0x17113b44fdd661A156cc01b5031E3aCF72c32EB3')
 originPolygonContractAddresses.set(ContractName.RaritiesWithOracle, '0xA9158E22F89Bb3F69c5600338895Cb5FB81e5090')
 originPolygonContractAddresses.set(ContractName.CollectionImplementation, '0x006080C6061C4aF79b39Da0842a3a22A7b3f185e')
 originPolygonContractAddresses.set(ContractName.UpgradeableBeacon, '0xDDb3781Fff645325C8896AA1F067bAa381607ecc')
@@ -55,6 +54,7 @@ originPolygonContractAddresses.set(ContractName.TPR, '0x1f8063CC04398Be214a7d8dD
 // TODO: Validate TPRProxy contract
 // originPolygonContractAddresses.set(ContractName.TPRProxy, '0x1C436C1EFb4608dFfDC8bace99d2B03c314f3348')
 originPolygonContractAddresses.set(ContractName.POI, '0xFEC09d5C192aaf7Ec7E2C89Cc8D3224138391B2E')
+originPolygonContractAddresses.set(ContractName.Checker, '0xC2D0637FE019817b7B307b9B966E4400EB4aC165')
 
 // There is no need to define contracts deployed to Mainnet here.
 // Ethereum Chains

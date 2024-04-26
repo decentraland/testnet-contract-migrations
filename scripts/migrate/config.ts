@@ -19,6 +19,7 @@ import {
   OwnableBatchVestingImplPostDeployment,
   POIAllowlistPostDeployment,
   RentalsProxyPostDeployment,
+  TPRPostDeployment,
   VestingImplPostDeployment,
 } from "./postDeployments/impl";
 import { creationCodesDir, sourceCodesDir } from "../common/paths";
@@ -37,7 +38,6 @@ import {
   CollectionFactoryV3ConstructorFactory,
   UpgradeableBeaconConstructorFactory,
   DummyDataFeedConstructorFactory,
-  RaritiesConstructorFactory,
   RaritiesWithOracleConstructorFactory,
   ChainlinkOracleConstructorFactory,
   ForwarderConstructorFactory,
@@ -81,7 +81,6 @@ export const polygonDeploymentOrder: ContractName[] = [
   ContractName.RoyaltiesManager,
   ContractName.MarketplaceV2,
   ContractName.ERC721Bid,
-  ContractName.Rarities,
   ContractName.RaritiesWithOracle,
   ContractName.CollectionImplementation,
   ContractName.UpgradeableBeacon,
@@ -96,6 +95,7 @@ export const polygonDeploymentOrder: ContractName[] = [
   // TODO: Deploy TPRProxy contract
   // ContractName.TPRProxy,
   ContractName.POI,
+  ContractName.Checker
 ]
 
 // Origin data of each contract.
@@ -149,7 +149,6 @@ polygonConstructorFactories.set(ContractName.DummyDataFeed, new DummyDataFeedCon
 polygonConstructorFactories.set(ContractName.ChainlinkOracle, new ChainlinkOracleConstructorFactory());
 polygonConstructorFactories.set(ContractName.MarketplaceV2, new MarketplaceV2ConstructorFactory());
 polygonConstructorFactories.set(ContractName.ERC721Bid, new PolygonERC721BidConstructorFactory());
-polygonConstructorFactories.set(ContractName.Rarities, new RaritiesConstructorFactory());
 polygonConstructorFactories.set(ContractName.RaritiesWithOracle, new RaritiesWithOracleConstructorFactory());
 polygonConstructorFactories.set(ContractName.UpgradeableBeacon, new UpgradeableBeaconConstructorFactory());
 polygonConstructorFactories.set(ContractName.Committee, new CommitteeConstructorFactory());
@@ -175,6 +174,8 @@ postDeployments.set(ContractName.DCLControllerV2, new DCLControllerV2PostDeploym
 postDeployments.set(ContractName.DCLRegistrar, new DCLRegistrarPostDeployment());
 postDeployments.set(ContractName.NAMEDenylist, new NAMEDenylistPostDeployment());
 postDeployments.set(ContractName.POIAllowlist, new POIAllowlistPostDeployment());
+
+polygonPostDeployments.set(ContractName.TPR, new TPRPostDeployment());
 
 // Misc
 export function getDeployedContracts(contractName: ContractName) {
